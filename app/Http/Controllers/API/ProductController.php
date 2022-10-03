@@ -84,18 +84,24 @@ class ProductController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-
-        $pro = Product::find($id);
         
         $file = $request->file('image');
+        
+        if ($id) {
+            $pro = Product::find($id);
+            if($file != null && $pro->image != 'default.png'){
+                Storage::delete('/public/images/'.$pro->image);
+            }else{
+                $data['image'] = $pro->image;
+            }
+        }
+        
         if ($file != null) {
             $filename = $file->hashName();
             $file->storeAs("/public/images", $filename);
             $data["image"] = $filename;
-
-            Storage::delete('/public/images' . $pro->image);    
         }else{
-            $data["image"] = $pro->image;
+            $data["image"] = 'default.png';
         }
 
         $pro->update($data);

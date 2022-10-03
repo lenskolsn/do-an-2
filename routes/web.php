@@ -55,5 +55,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/store/{id?}', [UserController::class, 'store'])->name('admin.user.store');
         Route::get('/delete/{id?}', [UserController::class, 'delete'])->name('admin.user.delete');
     });
-
+    // Khách hàng
+    Route::prefix('customers')->middleware('auth')->group(function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('admin.customer');
+        Route::get('/add', [CustomerController::class, 'add'])->name('admin.customer.add');
+        Route::get('/edit/{id?}', [CustomerController::class, 'edit'])->name('admin.customer.edit');
+        Route::post('/store/{id?}', [CustomerController::class, 'store'])->name('admin.customer.store');
+        Route::get('/delete/{id?}', [CustomerController::class, 'delete'])->name('admin.customer.delete');
+    });
+    
 });

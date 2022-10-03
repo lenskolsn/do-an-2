@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -15,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::orderBy('id', 'desc')->paginate(5);
     }
 
     /**
@@ -26,7 +28,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $validator = $this->customValidate($data);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $file = $request->file('image');
+        if ($file != null) {
+            $filename = $file->hashName();
+            $file->storeAs("/public/images", $filename);
+            $data["image"] = $filename;
+        }else{
+            $data["image"] = 'product.png';
+        }
+
+        $pro = Product::create($data);
+
+        return response()->json([
+            'data' => $pro,
+            'message' => 'Thêm sản phẩm thành công!'
+        ], 200);
     }
 
     /**
@@ -37,7 +63,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return Product::find($id);
     }
 
     /**
@@ -47,9 +73,37 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id=null)
     {
-        //
+        $data = $request->all();
+
+        $validator = $this->customValidate($data);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $pro = Product::find($id);
+        
+        $file = $request->file('image');
+        if ($file != null) {
+            $filename = $file->hashName();
+            $file->storeAs("/public/images", $filename);
+            $data["image"] = $filename;
+
+            Storage::delete('/public/images' . $pro->image);    
+        }else{
+            $data["image"] = $pro->image;
+        }
+
+        $pro->update($data);
+        
+        return response()->json([
+            'data' => $pro,
+            'message' => 'Cập nhật sản phẩm thành công!'
+        ], 200);
     }
 
     /**
@@ -60,6 +114,29 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pro = Product::find($id);
+        
+        Product::destroy($id);
+        
+        Storage::delete('/public/images/' . $pro->image);
+
+        return response()->json([
+            'message' => 'Xóa sản phẩm thành công!'
+        ]);
+    }
+    public function customValidate($data)
+    {
+        $validator = Validator::make($data, [
+            'name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'categoryId' => 'required'
+        ], [], [
+            'name' => 'Tên sản phẩm',
+            'price' => 'Giá',
+            'description' => 'Mô tả',
+            'categoryId' => 'Danh mục',
+        ]);
+        return $validator;
     }
 }

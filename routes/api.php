@@ -9,6 +9,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('products', ProductController::class);
+Route::prefix('products')->group(function (){
+    Route::get('/',[ProductController::class,'index']);
+    Route::get('/show{id?}',[ProductController::class,'show']);
+    Route::post('/store',[ProductController::class,'store']);
+    Route::post('/update/{id?}',[ProductController::class,'update']);
+    Route::delete('/delete/{id?}',[ProductController::class,'destroy']);
+});
 
 Route::apiResource('categories', CategoryController::class);

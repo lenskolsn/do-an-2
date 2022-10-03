@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $attributes['title'] }}</title>
-
+    <link rel="icon" href="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -46,16 +46,16 @@
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
                     <li class="nav-item">
-                        <img src="https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/307460905_1706484743061390_705305069862452506_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=arG2B5Yg5M8AX-Lly65&_nc_ht=scontent.fvca1-1.fna&oh=00_AT_mOSsHReQV0pvEBHiiu6fDtrU04DpFJ4A3s8GZHDVHdw&oe=633B55D3" class="rounded-circle img-thumbnail"
+                        <img src="/storage/avatar/{{Auth::user()->avatar}}" class="rounded-circle shadow-sm"
                             width="40" height="40" alt="">
                     </li>
                     <li class="nav-item mx-2">
                         <a href="" class="text-decoration-none text-dark">
                             <span>
-                                {{-- {{ Auth::user()->name }} --}}
+                                {{ Auth::user()->name ?? 'Lensko'}}
                             </span>
                         </a>/
-                        <a class="text-decoration-none text-dark me-3" href="">Logout
+                        <a class="text-decoration-none text-dark me-3" href="{{route('admin.logout')}}">Đăng xuất
                             <i class="fas fa-sign-out-alt"></i></a>
                     </li>
                 </ul>
@@ -64,40 +64,27 @@
             <!-- /.navbar -->
 
             <!-- Main Sidebar Container -->
-            <aside class="main-sidebar main-sidebar-custom sidebar-light-primary elevation-4">
+            <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
                 <!-- Sidebar -->
                 <div class="sidebar">
                     <!-- Sidebar user (optional) -->
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="image">
-                            <img src="https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/307460905_1706484743061390_705305069862452506_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=arG2B5Yg5M8AX-Lly65&_nc_ht=scontent.fvca1-1.fna&oh=00_AT_mOSsHReQV0pvEBHiiu6fDtrU04DpFJ4A3s8GZHDVHdw&oe=633B55D3" class="img-circle elevation-2"
-                                alt="User Image">
-                        </div>
-                        <div class="info">
-                            <a href="" class="d-block"></a>
-                        </div>
+                    <div class="mt-3 ms-3 pb-3 mb-3 d-flex align-items-center">
+                        <img src="/storage/avatar/{{Auth::user()->avatar}}" class="rounded-circle shadow-sm"
+                        width="40" height="40">
+                        <span class="ms-2 fw-bold text-light">
+                            {{ Auth::user()->name ?? 'Lensko'}}
+                        </span>
                     </div>
 
                     <!-- SidebarSearch Form -->
-                    <div class="form-inline">
-                        <div class="input-group" data-widget="sidebar-search">
-                            <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                                aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-sidebar">
-                                    <i class="fas fa-search fa-fw"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-virus"></i>
+                                <a href="{{route('admin.dashboard')}}" class="nav-link">
+                                    <i class="nav-icon fas fa-chalkboard"></i>
                                     <p>
                                         Dashboard
                                     </p>
@@ -121,9 +108,57 @@
                             </li>
                             <li class="nav-item">
                                 <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Đơn hàng
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.user')}}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-astronaut"></i>
                                     <p>
                                         Users
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Khách hàng
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-signature"></i>
+                                    <p>
+                                        Bài viết
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-comment"></i>
+                                    <p>
+                                        Bình luận
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-image"></i>
+                                    <p>
+                                        Banner
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-phone"></i>
+                                    <p>
+                                        Liên hệ
                                     </p>
                                 </a>
                             </li>
@@ -144,7 +179,7 @@
                             <div class="col-12">
                                 <!-- Default box -->
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header bg-light">
                                         <h3 class="card-title">{{ $attributes['title'] }}</h3>
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"

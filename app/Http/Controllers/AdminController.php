@@ -47,7 +47,7 @@ class AdminController extends Controller
         $validator = Validator::make($data,[
             'name'=>'required',
             'email'=>'required|email',
-            'password'=>'required',
+            'password'=>'required|min:6',
             'confirm_password'=>'required|same:password',
         ],[],[
             'name'=>'Name',
@@ -67,8 +67,11 @@ class AdminController extends Controller
         $product_category = Category::count();
         return view("admin.dashboard",compact('product_category'));
     }
-    function logout(){
+    function logout(Request $request){
         Auth::logout();
+
+        $request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
     }
 }

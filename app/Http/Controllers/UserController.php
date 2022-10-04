@@ -42,15 +42,6 @@ class UserController extends Controller
         ])->validate();
 
         $file = $request->file('avatar');
-        if ($file != null) {
-            $filename = $file->hashName();
-            $file->storeAs("/public/avatar", $filename);
-            $data["avatar"] = $filename;
-        }else{
-            $data['avatar'] = 'default.png';
-        }
-
-        unset($data['confirm_password']);
 
         if ($id) {
             $userOld = User::find($id);
@@ -63,6 +54,16 @@ class UserController extends Controller
         } else {
             $data['password'] = Hash::make($data['password']);
         }
+
+        if ($file != null) {
+            $filename = $file->hashName();
+            $file->storeAs("/public/avatar", $filename);
+            $data["avatar"] = $filename;
+        }else{
+            $data['avatar'] = 'default.png';
+        }
+
+        unset($data['confirm_password']);
 
         $user = User::updateOrCreate(['id'=>$id],$data);
         $user->save();

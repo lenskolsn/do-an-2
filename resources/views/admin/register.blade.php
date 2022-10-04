@@ -11,24 +11,43 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="/home/css/login.css">
+    <style>
+        .box{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 m-auto py-5">
-                <h4 class="text-center fw-bold">Register <i class="fa-solid fa-key"></i></h4>
-                <form action="{{ route('admin.store_register') }}" method="post">
-                    @csrf
-                    <x-input placeholder="name" name="name" label="Name" />
-                    <x-input placeholder="email" name="email" label="Email" />
-                    <x-input placeholder="password" name="password" type="password" label="Password" />
-                    <x-input placeholder="confirm password" name="confirm_password" type="password"
-                        label="Confirm Password" />
-                    <button class="btn btn-dark mt-2">Register</button>
-                </form>
+    <div class="box">
+        <form action="{{ route('admin.store_register') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="box-item">
+                <h4>Đăng ký</h4>
+                <input name="name" value="{{ old('name') }}" placeholder="Họ tên" type="text">
+                @error('name')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="email" value="{{ old('email') }}" placeholder="Email" type="email">
+                @error('email')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="password" value="{{ old('password') }}" placeholder="Mật khẩu" type="password">
+                @error('password')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="confirm_password" value="{{ old('confirm_password') }}" placeholder="Nhập lại mật khẩu"
+                    type="password">
+                @error('confirm_password')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <button>ĐĂNG KÝ</button>
+                <p>Đã có tài khoản, đăng nhập <a href="{{ route('admin.login') }}" class="text-decoration-none">tại đây</a></p>
             </div>
-        </div>
+        </form>
     </div>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"

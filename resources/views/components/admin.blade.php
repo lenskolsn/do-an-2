@@ -21,6 +21,8 @@
 
     <link rel="stylesheet" href="/awesome-notifications/style.css" />
     <link rel="stylesheet" href="/css/app.css">
+    <script src="/ckeditor/ckeditor.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -131,7 +133,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{route('admin.post')}}" class="nav-link">
                                     <i class="nav-icon fas fa-signature"></i>
                                     <p>
                                         Bài viết
@@ -224,7 +226,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/awesome-notifications/index.var.js"></script>
-
+    {{-- Ckeditor --}}
     <script src="/js/app.js"></script>
     @yield('script')
 </body>

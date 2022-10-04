@@ -26,7 +26,7 @@
                     <span style="color: red; font-size: 13px;">{{ $message }}</span>
                 @enderror
                 <button>ĐĂNG KÝ</button>
-                <p>Đã có tài khoản, đăng nhập <a href="{{ route('home.login') }}">tại đây</a></p>
+                <p>Đã có tài khoản, đăng nhập <a href="{{ route('home.login') }}" class="text-decoration-none">tại đây</a></p>
             </div>
         </form>
     </div>

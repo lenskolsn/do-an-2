@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
 
 class HomeController extends Controller
 {
@@ -24,6 +25,19 @@ class HomeController extends Controller
     function about()
     {
         return view('about');
+    }
+    function news()
+    {
+        $post = Post::all();
+        $post_new = Post::orderByDesc('id')->get();
+        return view('news',compact(['post','post_new']));
+    }
+    function new_detail($id=null)
+    {
+        $post = Post::find($id);
+        $posts = Post::orderByDesc('id')->get();
+        $comment = Comment::orderByDesc('id')->get();
+        return view('new_detail',compact(['post','posts','comment']));
     }
     function product($id = null)
     {

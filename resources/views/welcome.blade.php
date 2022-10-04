@@ -1,6 +1,6 @@
 <x-home title="Trang chủ">
     @foreach ($product as $item)
-        <li class="col l-3 m-4 c-6 body__menu-list-item">
+        <li class="col-lg-3 col-md-4 col-6 body__menu-list-item">
             <a href="" class="body__menu-list-link">
                 <div class="body__menu-list-link-img-btn">
                     <img src="/storage/images/{{ $item->image }}" alt="" />

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerMiddleWare
 {
@@ -16,8 +17,9 @@ class CustomerMiddleWare
      */
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->expectsJson()) {
-            return route('home.login');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('home.login');
         }
+        return $next($request);
     }
 }

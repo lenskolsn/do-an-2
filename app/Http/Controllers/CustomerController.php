@@ -19,6 +19,14 @@ class CustomerController extends Controller
     {
         return view('login');
     }
+    function logout(Request $request)
+    {
+        Auth::guard('customer')->logout();
+
+        $request->session()->regenerateToken();
+
+        return back();
+    }
     function login_store(Request $request)
     {
         $data = $request->all();
@@ -34,9 +42,8 @@ class CustomerController extends Controller
 
         if (Auth::guard('customer')->attempt($data)) {
             $request->session()->regenerate();
-            
             return redirect()->route('home');
-        }else{
+        } else {
             return redirect()->back();
         }
 
@@ -53,7 +60,7 @@ class CustomerController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
-            'password' => 'required',
+            'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ], [], [
             'name' => 'Họ tên',
@@ -73,22 +80,27 @@ class CustomerController extends Controller
 
         return redirect()->route('home.login');
     }
-    function index(){
-        $customer = Customer::orderBy('id','desc')->get();
-        return view('admin.customer.index',compact('customer'));
+    function index()
+    {
+        $customer = Customer::orderBy('id', 'desc')->get();
+        return view('admin.customer.index', compact('customer'));
     }
-    function add(){
+    function add()
+    {
         return view('admin.customer.add');
     }
-    function edit($id){
+    function edit($id)
+    {
         $customer = Customer::find($id);
-        return view('admin.customer.edit',compact('customer'));
+        return view('admin.customer.edit', compact('customer'));
     }
-    function delete($id){
+    function delete($id)
+    {
         Customer::destroy($id);
         return back();
     }
-    function store(Request $request, $id = null){
+    function store(Request $request, $id = null)
+    {
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => 'required',
@@ -107,31 +119,33 @@ class CustomerController extends Controller
         unset($data['_token']);
         unset($data['confirm_password']);
 
-        $data['password'] = Hash::make($request->password);
-
         $file = $request->file('avatar');
-        
+
         if ($id) {
             $cusOld = Customer::find($id);
-            if($file != null && $cusOld->avatar != 'default.png'){
-                Storage::delete('/public/avatar/'.$cusOld->avatar);
-            }else{
+            if ($file != null && $cusOld->avatar != 'default.png') {
+                Storage::delete('/public/avatar/' . $cusOld->avatar);
+            } else {
                 $data['avatar'] = $cusOld->avatar;
             }
-            $data['password'] = $cusOld->password;
+            if ($data['password'] != null) {
+                $data['password'] = Hash::make($request->password);
+            } else {
+                $data['password'] = $cusOld->password;
+            }
         } else {
             $data['password'] = Hash::make($data['password']);
         }
 
-        if($file){
+        if ($file) {
             $filename = $file->hashName();
-            $file->storeAs('/public/avatar',$filename);
+            $file->storeAs('/public/avatar', $filename);
             $data['avatar'] = $filename;
-        }else{
+        } else {
             $data['avatar'] = 'default.png';
         }
 
-        $cus = Customer::updateOrCreate(['id'=>$id],$data);
+        $cus = Customer::updateOrCreate(['id' => $id], $data);
         $cus->save();
 
         return redirect()->route('admin.customer');

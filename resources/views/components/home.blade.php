@@ -11,7 +11,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon"
         href="https://images.squarespace-cdn.com/content/v1/571e9052b6aa601c46010a10/1534446770563-GVBF37CZ6BLRFNHEC3Y8/Logo+for+Leaf+Logic+Wellness+Tea+Logo.png">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/home/css/grid.css" />
     <link rel="stylesheet" href="/home/css/base.css" />
     <link rel="stylesheet" href="/home/css/main.css" />
@@ -22,6 +23,22 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mali&display=swap');
+
+        * {
+            font-family: 'Mali', cursive;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -62,6 +79,9 @@
                                     </div>
                                 </form>
                             </li>
+                        </ul>
+
+                        <ul class="header__navbar-list">
                             @if (Auth::guard('customer')->check())
                                 <li class="header__navbar-item navbar-item-display">
                                     <a href="" class="header__navbar-link-right">
@@ -77,7 +97,7 @@
                                                     tin</a>
                                             </li>
                                             <li class="user__notify-item">
-                                                <a href="" class="user__notify-link">Đăng xuất</a>
+                                                <a href="{{route('home.logout')}}" class="user__notify-link">Đăng xuất</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -154,7 +174,7 @@
                     </div>
                     <ul class="header__category-list">
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Tin tức</a>
+                            <a href="{{ route('home.news') }}" class="header__category-link">Tin tức</a>
                         </li>
                         <li class="header__category-item">
                             <a href="" class="header__category-link">Thực đơn</a>
@@ -173,9 +193,17 @@
             <label class="mt__header-overlay" for="checkbox-hidden"></label>
             <div class="mt__header-menu">
                 <div class="mt__header-menu-heading">
-                    <a href="" class="mt__header-menu-login">Đăng nhập</a>
+                    @if (Auth::guard('customer')->check())
+                    <a href="" class="mt__header-menu-login"><img style="border-radius: 50%; margin-right: 5px;"
+                        src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
+                        width="30" height="30" alt=""> {{Auth::guard('customer')->user()->name}}</a>
                     <a href="" class="mt__header-menu-special">/</a>
-                    <a href="" class="mt__header-menu-register">Đăng ký</a>
+                    <a href="{{route('home.logout')}}" class="mt__header-menu-register">Đăng xuất</a>
+                    @else
+                    <a href="{{route('home.login')}}" class="mt__header-menu-login">Đăng nhập</a>
+                    <a href="" class="mt__header-menu-special">/</a>
+                    <a href="{{route('home.register')}}" class="mt__header-menu-register">Đăng ký</a>
+                    @endif
                 </div>
                 <div class="mt__header-menu-list">
                     <li class="mt__header-menu-item">

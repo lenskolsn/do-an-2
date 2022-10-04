@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
         integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/571e9052b6aa601c46010a10/1534446770563-GVBF37CZ6BLRFNHEC3Y8/Logo+for+Leaf+Logic+Wellness+Tea+Logo.png">
+    <link rel="icon"
+        href="https://images.squarespace-cdn.com/content/v1/571e9052b6aa601c46010a10/1534446770563-GVBF37CZ6BLRFNHEC3Y8/Logo+for+Leaf+Logic+Wellness+Tea+Logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/home/css/grid.css" />
     <link rel="stylesheet" href="/home/css/base.css" />
     <link rel="stylesheet" href="/home/css/main.css" />
@@ -20,7 +23,26 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mali&display=swap');
 
+        * {
+            font-family: 'Mali', cursive;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+    @yield('style')
 </head>
 
 <body>
@@ -46,7 +68,6 @@
                         </ul>
 
                         <ul class="header__navbar-list">
-                            <li class="header__navbar-item"></li>
                             <li class="header__navbar-item navbar-item-display">
                                 <form action="{{ route('home.search') }}" method="get">
                                     <a href="#" class="header__navbar-link-right">
@@ -62,19 +83,26 @@
                                     </div>
                                 </form>
                             </li>
+                        </ul>
+
+                        <ul class="header__navbar-list">
                             @if (Auth::guard('customer')->check())
                                 <li class="header__navbar-item navbar-item-display">
                                     <a href="" class="header__navbar-link-right">
-                                        <img style="border-radius: 50%; margin-right: 5px;" src="/storage/avatar/{{Auth::guard('customer')->user()->avatar}}" width="30" height="30" alt="">
-                                        {{Auth::guard('customer')->user()->name}}
+                                        <img style="border-radius: 50%; margin-right: 5px;"
+                                            src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
+                                            width="30" height="30" alt="">
+                                        {{ Auth::guard('customer')->user()->name }}
                                     </a>
                                     <div class="user__notify">
                                         <ul class="user__notify-list">
                                             <li class="user__notify-item">
-                                                <a href="{{route('home.info')}}" class="user__notify-link">Thông tin</a>
+                                                <a href="{{ route('home.info') }}" class="user__notify-link">Thông
+                                                    tin</a>
                                             </li>
                                             <li class="user__notify-item">
-                                                <a href="" class="user__notify-link">Đăng xuất</a>
+                                                <a href="{{ route('home.logout') }}" class="user__notify-link">Đăng
+                                                    xuất</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -121,7 +149,7 @@
                     <ul class="header__category-list">
                         <li class="header__category-item">
                             <a href="{{ route('home') }}" id="{{ request()->routeIs('home') ? 'active' : '' }}"
-                                class="header__category-link header__category-link">Trang chủ</a>
+                                class="header__category-link">Trang chủ</a>
                         </li>
                         <li class="header__category-item">
                             <a href="{{ route('about') }}" id="{{ request()->routeIs('about') ? 'active' : '' }}"
@@ -129,7 +157,7 @@
                         </li>
 
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Sản phẩm
+                            <a id="{{ request()->routeIs('product') ? 'active' : '' }}" href="" class="header__category-link">Sản phẩm
                                 <i class="header__category-icon bx bxs-down-arrow"></i>
                             </a>
 
@@ -152,8 +180,8 @@
                     </div>
                     <ul class="header__category-list">
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Tin tức</a>
-                        </li>
+                            <a href="{{ route('home.news') }}" id="{{ request()->routeIs('home.news') || request()->routeIs('home.new_detail') ? 'active' : '' }}" class="header__category-link">Tin tức</a>
+                        </li>   
                         <li class="header__category-item">
                             <a href="" class="header__category-link">Thực đơn</a>
                         </li>
@@ -171,9 +199,18 @@
             <label class="mt__header-overlay" for="checkbox-hidden"></label>
             <div class="mt__header-menu">
                 <div class="mt__header-menu-heading">
-                    <a href="" class="mt__header-menu-login">Đăng nhập</a>
-                    <a href="" class="mt__header-menu-special">/</a>
-                    <a href="" class="mt__header-menu-register">Đăng ký</a>
+                    @if (Auth::guard('customer')->check())
+                        <a href="" class="mt__header-menu-login"><img
+                                style="border-radius: 50%; margin-right: 5px;"
+                                src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}" width="30"
+                                height="30" alt=""> {{ Auth::guard('customer')->user()->name }}</a>
+                        <a href="" class="mt__header-menu-special">/</a>
+                        <a href="{{ route('home.logout') }}" class="mt__header-menu-register">Đăng xuất</a>
+                    @else
+                        <a href="{{ route('home.login') }}" class="mt__header-menu-login">Đăng nhập</a>
+                        <a href="" class="mt__header-menu-special">/</a>
+                        <a href="{{ route('home.register') }}" class="mt__header-menu-register">Đăng ký</a>
+                    @endif
                 </div>
                 <div class="mt__header-menu-list">
                     <li class="mt__header-menu-item">
@@ -231,9 +268,8 @@
         <div id="app__container">
             {{-- Product --}}
             <div class="body__menu-wrap">
-                <div class="grid wide">
-                    <p style="font-size: 1.4rem; "><a href="{{ route('home') }}">Trang chủ</a> / <span
-                            style="color: #876445; font-weight: bold;">{{ $attributes['title'] }}</span></p>
+                <div class="grid wide mt-3">
+                    <p style="font-size: 1.4rem;"><a href="{{ route('home') }}" style="color: #4797B1;">Trang chủ</a> / <span class="text-secondary">{{ $attributes['title'] }}</span></p>
                     {{ $slot }}
                 </div>
             </div>

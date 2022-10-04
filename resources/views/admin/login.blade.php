@@ -11,21 +11,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="/home/css/login.css">
+    <style>
+        .box{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 m-auto py-5">
-                <h4 class="text-center fw-bold">Login</h4>
-                <form action="{{ route('admin.store_login') }}" method="post">
-                    @csrf
-                    <x-input placeholder="email" name="email" label="Email" />
-                    <x-input placeholder="password" name="password" type="password" label="Password" />
-                    <button class="btn btn-dark mt-2">Login</button>
-                </form>
+    <div class="box">
+        <form action="{{ route('admin.store_login') }}" method="post">
+            @csrf
+            <div class="box-item">
+                <h4>Đăng nhập</h4>
+                <input name="email" value="{{old('email')}}" placeholder="Email" type="email">
+                @error('email')
+                <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="password" value="{{old('password')}}" placeholder="Mật khẩu" type="password">
+                @error('password')
+                <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <button>ĐĂNG NHẬP</button>
+                <p>Nếu bạn chưa có tài khoản, đăng ký <a href="{{ route('admin.register') }}">tại đây</a></p>
             </div>
-        </div>
+        </form>
     </div>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"

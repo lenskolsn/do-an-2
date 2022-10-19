@@ -39,8 +39,9 @@ class PostController extends Controller
                 Comment::destroy($cmt->id);
             }
             Post::destroy($id);
+        }else{
+            Post::destroy($id);
         }
-
         return back();
     }
     function store(Request $request, $id=null)
@@ -71,6 +72,8 @@ class PostController extends Controller
             $filename = $file->hashName();
             $file->storeAs('/public/post',$filename);
             $data['image'] = $filename;
+        }else if(!$id){
+            $data['image'] = 'default.jpg';
         }
 
         $data['id_author'] = Auth::user()->id;

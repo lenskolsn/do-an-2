@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CustomerController extends Controller
 {
@@ -42,8 +43,10 @@ class CustomerController extends Controller
 
         if (Auth::guard('customer')->attempt($data)) {
             $request->session()->regenerate();
+            Alert::success('Đăng nhập thành công!');
             return redirect()->route('home');
         } else {
+            Alert::warning('Tên tài khoản hoặc mật khẩu không đúng!');
             return redirect()->back();
         }
 
@@ -57,13 +60,13 @@ class CustomerController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'name' => 'required',
+            'fullName' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|numeric',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ], [], [
-            'name' => 'Họ tên',
+            'fullName' => 'Họ tên',
             'email' => 'Email',
             'phone' => 'Số điện thoại',
             'password' => 'Mật khẩu',
@@ -77,7 +80,8 @@ class CustomerController extends Controller
 
         $cus = Customer::updateOrCreate($data);
         $cus->save();
-
+        
+        Alert::success('Đăng ký thành công!');
         return redirect()->route('home.login');
     }
     function index()
@@ -103,13 +107,13 @@ class CustomerController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'name' => 'required',
+            'fullName' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
             'password' => $id ? '' : 'required',
             'confirm_password' => $id ? '' : 'required|same:password'
         ], [], [
-            'name' => 'Họ tên',
+            'fullName' => 'Họ tên',
             'email' => 'Email',
             'phone' => 'Số điện thoại',
             'password' => 'Mật khẩu',

@@ -15,4 +15,7 @@ class Customer extends Authenticatable
     public function comment(){
         return $this->hasMany(Comment::class, 'id', 'id_customer');
     }
+    public function reply(){
+        return $this->hasMany(Reply::class, 'id_comment', 'id');
+    }
 }

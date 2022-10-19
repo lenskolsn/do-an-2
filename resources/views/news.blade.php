@@ -15,7 +15,9 @@
                                 <a href="{{ route('home.new_detail', $item->id) }}" class="text-dark">
                                     <h2>{{ $item->title }}</h2>
                                 </a>
-                                <p class="h5">{{ $item->description }}</p>
+                                <p class="h4">{{ $item->description }}</p>
+                                <p class="h5 text-secondary" style="font-size: 13px;">
+                                    {{ $item->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
                     </div>

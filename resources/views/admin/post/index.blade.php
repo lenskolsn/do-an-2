@@ -34,7 +34,7 @@
                         </div>
                     </td>
                     <td>{{$item->author->name}}</td>
-                    <td>{{$item->views}}</td>
+                    <td><i class="fas fa-eye"></i> {{$item->views}}</td>
                     <td>{{$item->created_at->format('d/m/y H:i:s')}}</td>
                     <td>
                         <a href="{{route('admin.post.show',$item->id)}}" class="btn btn-sm btn-info shadow"><i class="fas fa-eye"></i></a>

@@ -3,7 +3,7 @@
         @csrf
         <div class="row">
             <div class="col-lg-6">
-                <x-input name="name" label="Họ tên" />
+                <x-input name="fullName" label="Họ tên" />
                 <x-input name="email" type="email" label="Email" />
                 <x-input name="phone" type="text" label="Số điện thoại" />
                 <x-input name="password" type="password" label="Mật khẩu" />

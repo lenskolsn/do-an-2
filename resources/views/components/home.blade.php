@@ -88,7 +88,7 @@
                                         <img style="border-radius: 50%; margin-right: 5px;"
                                             src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
                                             width="30" height="30" alt="">
-                                        {{ Auth::guard('customer')->user()->name }}
+                                        {{ Auth::guard('customer')->user()->fullName }}
                                     </a>
                                     <div class="user__notify">
                                         <ul class="user__notify-list">
@@ -97,7 +97,8 @@
                                                     tin</a>
                                             </li>
                                             <li class="user__notify-item">
-                                                <a href="{{route('home.logout')}}" class="user__notify-link">Đăng xuất</a>
+                                                <a href="{{ route('home.logout') }}" class="user__notify-link">Đăng
+                                                    xuất</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -147,7 +148,8 @@
                                 class="header__category-link header__category-link">Trang chủ</a>
                         </li>
                         <li class="header__category-item">
-                            <a href="{{ route('about') }}" id="{{ request()->routeIs('about') ? 'active' : '' }}"
+                            <a href="{{ route('home.about') }}"
+                                id="{{ request()->routeIs('about') ? 'active' : '' }}"
                                 class="header__category-link">Giới thiệu</a>
                         </li>
 
@@ -159,7 +161,7 @@
                             <ul class="header__category-menu">
                                 @foreach ($category as $item)
                                     <li class="header__category-menu-item">
-                                        <a href="{{ route('product', $item->id) }}"
+                                        <a href="{{ route('home.product', $item->id) }}"
                                             class="header__category-menu-link">{{ $item->name }}</a>
                                     </li>
                                 @endforeach
@@ -168,8 +170,8 @@
                     </ul>
                     <div class="header_-category-img">
                         <a href="" class="header__category-link">
-                            <img src="/home/img/logo.png" width="100" height="100" id="abc"
-                                alt="" />
+                            <img class="rounded-circle"
+                                src="/home/img/logo.png" width="100" height="100" id="abc" alt="" />
                         </a>
                     </div>
                     <ul class="header__category-list">
@@ -177,10 +179,10 @@
                             <a href="{{ route('home.news') }}" class="header__category-link">Tin tức</a>
                         </li>
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Thực đơn</a>
+                            <a href="{{ route('home.menu') }}" class="header__category-link">Thực đơn</a>
                         </li>
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Liên hệ</a>
+                            <a href="{{ route('home.contact') }}" class="header__category-link">Liên hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -194,32 +196,33 @@
             <div class="mt__header-menu">
                 <div class="mt__header-menu-heading">
                     @if (Auth::guard('customer')->check())
-                    <a href="" class="mt__header-menu-login"><img style="border-radius: 50%; margin-right: 5px;"
-                        src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
-                        width="30" height="30" alt=""> {{Auth::guard('customer')->user()->name}}</a>
-                    <a href="" class="mt__header-menu-special">/</a>
-                    <a href="{{route('home.logout')}}" class="mt__header-menu-register">Đăng xuất</a>
+                        <a href="" class="mt__header-menu-login"><img
+                                style="border-radius: 50%; margin-right: 5px;"
+                                src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}" width="30"
+                                height="30" alt=""> {{ Auth::guard('customer')->user()->name }}</a>
+                        <a href="" class="mt__header-menu-special">/</a>
+                        <a href="{{ route('home.logout') }}" class="mt__header-menu-register">Đăng xuất</a>
                     @else
-                    <a href="{{route('home.login')}}" class="mt__header-menu-login">Đăng nhập</a>
-                    <a href="" class="mt__header-menu-special">/</a>
-                    <a href="{{route('home.register')}}" class="mt__header-menu-register">Đăng ký</a>
+                        <a href="{{ route('home.login') }}" class="mt__header-menu-login">Đăng nhập</a>
+                        <a href="" class="mt__header-menu-special">/</a>
+                        <a href="{{ route('home.register') }}" class="mt__header-menu-register">Đăng ký</a>
                     @endif
                 </div>
                 <div class="mt__header-menu-list">
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Trang chủ</a>
+                        <a href="{{ route('home') }}" class="mt__header-menu-link">Trang chủ</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Giới thiệu</a>
+                        <a href="{{ route('home.about') }}" class="mt__header-menu-link">Giới thiệu</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Sản phẩm</a>
+                        <a href="{{ route('home.product') }}" class="mt__header-menu-link">Sản phẩm</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Tin tức</a>
+                        <a href="{{ route('home.news') }}" class="mt__header-menu-link">Tin tức</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Liên hệ</a>
+                        <a href="{{ route('home.contact') }}" class="mt__header-menu-link">Liên hệ</a>
                     </li>
                 </div>
             </div>
@@ -232,7 +235,7 @@
                                     class="mt__header-icon bx bx-list-ul"></i></label>
                         </div>
                         <div class="mt__header-img">
-                            <a href=""><img src="/home/img/logo.png" width="100" height="100"
+                            <a href=""><img src="/home/img/logo.png" 
                                     alt="" /></a>
                         </div>
                         <div class="header__navbar-item navbar-item-display">
@@ -257,6 +260,50 @@
             </div>
         </div>
 
+        {{-- <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner" style="height: 600px;">
+                <div class="carousel-item active" data-bs-interval="10000">
+                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>First slide label</h5>
+                        <p>Some representative placeholder content for the first slide.</p>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Second slide label</h5>
+                        <p>Some representative placeholder content for the second slide.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Third slide label</h5>
+                        <p>Some representative placeholder content for the third slide.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div> --}}
+        
         <!-- slider -->
         <div id="slider">
 
@@ -266,7 +313,7 @@
         <div id="app__container">
             {{-- Product --}}
             <div class="body__menu-wrap">
-                <div class="grid wide">
+                <div class="grid wide" id="app">
                     <div class="content__header">
                         <div class="content__header-logo">
                             <img src="/home/img/title_base.webp" alt="" />
@@ -274,14 +321,12 @@
                         <div class="content__header-title">DANH MỤC SẢN PHẨM</div>
                     </div>
                     <ul class="body__menu-nav">
-                        @foreach ($category as $item)
-                            <li class="body__menu-nav-item">
-                                <a href="{{ route('product', $item->id) }}"
-                                    class="body__menu-nav-link body__menu-nav-link">{{ $item->name }}</a>
+                            <li v-on:click="handleGetProduct(item.id)" class="body__menu-nav-item" :key="item.id" v-for="item in categories" style="cursor: pointer;">
+                                <a :class="{'bg-info text-light' : item.id == categoryId}" class="body__menu-nav-link body__menu-nav-link">@{{ item.name }}</a>
                             </li>
-                        @endforeach
                     </ul>
                     <ul class="row body__menu-list">
+                        @include('sweetalert::alert')
                         {{ $slot }}
                     </ul>
                 </div>
@@ -326,7 +371,9 @@
                 <ul class="row footer__list align-items-center">
                     <li class="col l-4 m-12 c-12 footer__list-item">
                         <a href="" class="header__category-link footer-logo">
-                            <img src="/home/img/logo.png" width="100" height="100" alt="" />
+                            <img class="rounded-circle"
+                                src="/storage/images/lsnlogo.jpg"
+                                width="80" height="80" alt="" />
                         </a>
                         <div class="footer__list-item-icon">
                             <a href="" class="footer__list-item-icon-link">
@@ -390,6 +437,13 @@
             <a href="#header" title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
         </div>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/awesome-notifications/index.var.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+    @yield('script')
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -8,8 +9,13 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReplyController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('test',function(){
+    return view('test');
+});
+// Client
 Route::prefix("/")->group(function () {
     // Trang chủ
     Route::get('/', [HomeController::class, 'index'])->name("home");
@@ -24,9 +30,11 @@ Route::prefix("/")->group(function () {
     // Trang đăng xuất
     Route::get('/dang-xuat', [CustomerController::class, 'logout'])->name("home.logout");
     // Trang giới thiệu
-    Route::get('/gioi-thieu', [HomeController::class, 'about'])->name("about");
+    Route::get('/gioi-thieu', [HomeController::class, 'about'])->name("home.about");
     // Trang sản phẩm
-    Route::get('/san-pham/{id?}', [HomeController::class, 'product'])->name("product");
+    Route::get('/san-pham/{id?}', [HomeController::class, 'product'])->name("home.product");
+    // Trang Chi tiết sản phẩm
+    Route::get('/chi-tiet/{id?}', [HomeController::class, 'product_detail'])->name("home.product_detail");
     // Trang thông tin  
     Route::get('/thong-tin', [CustomerController::class, 'info'])->name("home.info")->middleware('customer');
     // Trang tin tức
@@ -37,7 +45,16 @@ Route::prefix("/")->group(function () {
     Route::post('/binh-luan', [CommentController::class, 'store'])->name('home.comment.store')->middleware('customer');
     // Xóa comment
     Route::get('/binh-luan/{id?}', [CommentController::class, 'delete'])->name('home.comment.delete')->middleware('customer');
+    // Reply
+    Route::post('/tra-loi', [ReplyController::class, 'store'])->name('home.reply.store')->middleware('customer');
+    // Liên hệ
+    Route::get('/lien-he',[HomeController::class, 'contact'])->name('home.contact');
+    Route::post('/lien-he',[HomeController::class, 'contact_store'])->name('home.contact.store');
+    // Thực đơn
+    Route::get('/thuc-don',[HomeController::class, 'menu'])->name('home.menu');
+    
 });
+// Admin
 Route::prefix('admin')->group(function () {
     // Đăng nhập
     Route::get('/', [AdminController::class, 'index'])->name('admin.login');
@@ -53,6 +70,7 @@ Route::prefix('admin')->group(function () {
     // Sản phẩm
     Route::prefix('products')->middleware('auth')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('admin.product');
+        Route::get('/list', [ProductController::class, 'list']);
     });
     // Danh mục
     Route::prefix('categories')->middleware('auth')->group(function () {
@@ -89,6 +107,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/edit/{id?}', [CommentController::class, 'edit'])->name('admin.comment.edit');
         Route::post('/store/{id?}', [CommentController::class, 'store'])->name('admin.comment.store');
         Route::get('/delete/{id?}', [CommentController::class, 'delete'])->name('admin.comment.delete');
+    });
+
+    Route::prefix('banners')->group(function () {
+        Route::get('/', [BannerController::class, 'index'])->name('admin.banner');
+        Route::get('/add', [BannerController::class, 'add'])->name('admin.banner.add');
+        Route::get('/edit/{id?}', [BannerController::class, 'edit'])->name('admin.banner.edit');
+        Route::post('/store/{id?}', [BannerController::class, 'store'])->name('admin.banner.store');
+        Route::get('/delete/{id?}', [BannerController::class, 'delete'])->name('admin.banner.delete');
     });
     
 });

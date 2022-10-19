@@ -4,8 +4,8 @@
             @csrf
             <div class="box-item">
                 <h4>Đăng ký</h4>
-                <input name="name" value="{{ old('name') }}" placeholder="Họ tên" type="text">
-                @error('name')
+                <input name="fullName" value="{{ old('fullName') }}" placeholder="Họ tên" type="text">
+                @error('fullName')
                     <span style="color: red; font-size: 13px;">{{ $message }}</span>
                 @enderror
                 <input name="email" value="{{ old('email') }}" placeholder="Email" type="email">

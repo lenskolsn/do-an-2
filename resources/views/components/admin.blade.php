@@ -48,7 +48,7 @@
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
                     <li class="nav-item">
-                        <img src="/storage/avatar/{{Auth::user()->avatar}}" class="rounded-circle shadow-sm"
+                        <img src="/storage/avatar/{{Auth::user()->avatar ?? ''}}" class="rounded-circle shadow-sm"
                             width="40" height="40" alt="">
                     </li>
                     <li class="nav-item mx-2">
@@ -71,7 +71,7 @@
                 <div class="sidebar">
                     <!-- Sidebar user (optional) -->
                     <div class="mt-3 ms-3 pb-3 mb-3 d-flex align-items-center">
-                        <img src="/storage/avatar/{{Auth::user()->avatar}}" class="rounded-circle shadow-sm"
+                        <img src="/storage/avatar/{{Auth::user()->avatar ?? ''}}" class="rounded-circle shadow-sm"
                         width="40" height="40">
                         <span class="ms-2 fw-bold text-light">
                             {{ Auth::user()->name ?? 'Lensko'}}
@@ -141,7 +141,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{route('admin.comment')}}" class="nav-link">
                                     <i class="nav-icon fas fa-comment"></i>
                                     <p>
                                         Bình luận
@@ -149,7 +149,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{route('admin.banner')}}" class="nav-link">
                                     <i class="nav-icon fas fa-image"></i>
                                     <p>
                                         Banner

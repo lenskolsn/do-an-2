@@ -63,9 +63,6 @@
                     <i class="fas fa-undo"></i> Làm mới
                 </button>
             </div>
-            <div class="col-lg-6 d-flex justify-content-end">
-                <pagination :data="products" @pagination-change-page="getProduct"></pagination>
-            </div>
         </div>
         <table class="table shadow mt-2">
             <thead class="bg-info text-light">
@@ -80,7 +77,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in products.data" :key="item.id">
+                <tr v-for="item in products" :key="item.id">
                     <td>{{ item.id }}</td>
                     <td>{{ item.name }}</td>
                     <td>
@@ -112,7 +109,7 @@
     export default {
         data() {
             return {
-                products: {},
+                products: [],
                 categories: [],
                 mCreate: {},
                 action: "",
@@ -122,14 +119,7 @@
                     price: "",
                     description: "",
                     categoryId: "",
-                },
-                pagination: {
-                    current_page: null,
-                    last_page: null,
-                    links: null,
-                    next_page_url: null,
-                    prev_page_url: null,
-                },
+                }
             };
         },
         methods: {
@@ -138,17 +128,11 @@
                 this.action = "Thêm";
                 this.mCreate.show();
             },
-            getProduct(page = 1) {
+            getProduct() {
                 noti.asyncBlock(
-                    axios.get('/api/products?page=' + page),
+                    axios.get('/admin/products/list'),
                     (res) => {
                         this.products = res.data;
-                        // Pagination
-                        this.pagination.current_page = res.data.current_page;
-                        this.pagination.last_page = res.data.last_page;
-                        this.pagination.links = res.data.links;
-                        this.pagination.next_page_url = res.data.next_page_url;
-                        this.pagination.prev_page_url = res.data.prev_page_url;
                     },
                     (err) => {
                         noti.alert(err);

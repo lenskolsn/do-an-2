@@ -92,7 +92,7 @@
                                         <img style="border-radius: 50%; margin-right: 5px;"
                                             src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
                                             width="30" height="30" alt="">
-                                        {{ Auth::guard('customer')->user()->name }}
+                                        {{ Auth::guard('customer')->user()->fullName }}
                                     </a>
                                     <div class="user__notify">
                                         <ul class="user__notify-list">
@@ -152,19 +152,21 @@
                                 class="header__category-link">Trang chủ</a>
                         </li>
                         <li class="header__category-item">
-                            <a href="{{ route('about') }}" id="{{ request()->routeIs('about') ? 'active' : '' }}"
+                            <a href="{{ route('home.about') }}"
+                                id="{{ request()->routeIs('home.about') ? 'active' : '' }}"
                                 class="header__category-link">Giới thiệu</a>
                         </li>
 
                         <li class="header__category-item">
-                            <a id="{{ request()->routeIs('product') ? 'active' : '' }}" href="" class="header__category-link">Sản phẩm
+                            <a id="{{ request()->routeIs('home.product') ? 'active' : '' }}" href=""
+                                class="header__category-link">Sản phẩm
                                 <i class="header__category-icon bx bxs-down-arrow"></i>
                             </a>
 
                             <ul class="header__category-menu">
                                 @foreach ($category as $item)
                                     <li class="header__category-menu-item">
-                                        <a href="{{ route('product', $item->id) }}"
+                                        <a href="{{ route('home.product', $item->id) }}"
                                             class="header__category-menu-link">{{ $item->name }}</a>
                                     </li>
                                 @endforeach
@@ -180,13 +182,15 @@
                     </div>
                     <ul class="header__category-list">
                         <li class="header__category-item">
-                            <a href="{{ route('home.news') }}" id="{{ request()->routeIs('home.news') || request()->routeIs('home.new_detail') ? 'active' : '' }}" class="header__category-link">Tin tức</a>
-                        </li>   
-                        <li class="header__category-item">
-                            <a href="" class="header__category-link">Thực đơn</a>
+                            <a href="{{ route('home.news') }}"
+                                id="{{ request()->routeIs('home.news') || request()->routeIs('home.new_detail') ? 'active' : '' }}"
+                                class="header__category-link">Tin tức</a>
                         </li>
                         <li class="header__category-item">
-                            <a href="" class="header__category-link">Liên hệ</a>
+                            <a id="{{ request()->routeIs('home.menu') ? 'active' : '' }}" href="{{ route('home.menu') }}" class="header__category-link">Thực đơn</a>
+                        </li>
+                        <li class="header__category-item">
+                            <a id="{{ request()->routeIs('home.contact') ? 'active' : '' }}" href="{{ route('home.contact') }}" class="header__category-link">Liên hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -214,19 +218,19 @@
                 </div>
                 <div class="mt__header-menu-list">
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Trang chủ</a>
+                        <a href="{{ route('home') }}" class="mt__header-menu-link">Trang chủ</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Giới thiệu</a>
+                        <a href="{{ route('home.about') }}" class="mt__header-menu-link">Giới thiệu</a>
                     </li>
                     <li class="mt__header-menu-item">
                         <a href="" class="mt__header-menu-link">Sản phẩm</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Tin tức</a>
+                        <a href="{{ route('home.news') }}" class="mt__header-menu-link">Tin tức</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="" class="mt__header-menu-link">Liên hệ</a>
+                        <a href="{{ route('home.contact') }}" class="mt__header-menu-link">Liên hệ</a>
                     </li>
                 </div>
             </div>
@@ -269,12 +273,12 @@
             {{-- Product --}}
             <div class="body__menu-wrap">
                 <div class="grid wide mt-3">
-                    <p style="font-size: 1.4rem;"><a href="{{ route('home') }}" style="color: #4797B1;">Trang chủ</a> / <span class="text-secondary">{{ $attributes['title'] }}</span></p>
+                    <p><a href="{{ route('home') }}" style="color: #4797B1;">Trang chủ</a> / <span
+                            class="text-secondary">{{ $attributes['title'] }}</span></p>
+                    @include('sweetalert::alert')
                     {{ $slot }}
                 </div>
             </div>
-
-
         </div>
 
         <div id="footer">
@@ -282,7 +286,7 @@
                 <ul class="row footer__list align-items-center">
                     <li class="col l-4 m-12 c-12 footer__list-item">
                         <a href="" class="header__category-link footer-logo">
-                            <img src="/home/img/logo.png" width="100" height="100" alt="" />
+                            <img src="/storage/images/lsnlogo.jpg" class="rounded-circle" width="100" height="100" alt="" />
                         </a>
                         <div class="footer__list-item-icon">
                             <a href="" class="footer__list-item-icon-link">
@@ -347,6 +351,10 @@
             <a href="#header" title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
         </div>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/awesome-notifications/index.var.js"></script>
+    @yield('script')
 </body>
 
 </html>

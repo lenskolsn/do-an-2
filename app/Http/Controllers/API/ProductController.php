@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,11 +16,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id=1)
     {
-        return Product::orderBy('id', 'desc')->paginate(5);
+        return Product::where('categoryId',$id)->get();
     }
-
     /**
      * Store a newly created resource in storage.
      *

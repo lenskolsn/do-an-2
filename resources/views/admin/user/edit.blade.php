@@ -1,19 +1,32 @@
 <x-admin title="Cập nhật user">
-    <form action="{{ route('admin.user.store',$user->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-6">
-                <x-input value="{{$user->name}}" name="name" label="Họ tên" />
-                <x-input value="{{$user->email}}" name="email" type="email" label="Email" />
+                <x-input value="{{ $user->fullname }}" name="fullname" label="Họ tên" />
+                <x-input value="{{ $user->email }}" name="email" type="email" label="Email" />
+                <div class="form-group">
+                    <label class="form-label">Chức vụ</label>
+                    <select name="id_role" class="form-select">
+                        <option value="" disabled selected>Chọn chức vụ</option>
+                        @foreach ($role as $item)
+                            <option value="{{ $item->id }}" {{ $user->id_role == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_role')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
                 <x-input name="password" type="password" label="Mật khẩu" />
                 <x-input name="confirm_password" type="password" label="Nhập lại mật khẩu" />
             </div>
             <div class="col-lg-6">
                 <x-input name="avatar" id="fileImageUser" type="file" label="Avatar" />
-                <img src="/storage/avatar/{{$user->avatar}}" id="imageUser" width="200" alt="">
+                <img src="/storage/avatar/{{ $user->avatar }}" id="imageUser" width="200" alt="">
             </div>
             <div class="col-lg-12">
-                <a href="{{route('admin.user')}}" class="btn btn-sm btn-dark" id="saveBtn"><i class="fas fa-arrow-left"></i> Trở lại</a>
+                <a href="{{ route('admin.user') }}" class="btn btn-sm btn-dark" id="saveBtn"><i
+                        class="fas fa-arrow-left"></i> Trở lại</a>
                 <button class="btn btn-sm btn-primary" id="saveBtn"><i class="fas fa-save"></i> Lưu</button>
             </div>
         </div>

@@ -197,9 +197,7 @@
                 this.proData.price = pro.price;
                 this.proData.description = pro.description;
                 this.proData.categoryId = pro.categoryId;
-
                 this.action = "Cập nhật";
-
                 this.mCreate.show();
             },
             deleteProduct(id) {

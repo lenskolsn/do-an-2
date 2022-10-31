@@ -3,9 +3,9 @@
         <thead class="bg-info text-light">
             <tr>
                 <th>#</th>
-                <th>Tác giả</th>
+                <th>Khách hàng</th>
                 <th>Nội dung</th>
-                <th>Trang</th>
+                <th>Bài viết</th>
                 <th>Chức năng</th>                
             </tr>
         </thead>
@@ -16,7 +16,7 @@
                     <td class="d-flex align-items-center">
                         <img src="/storage/avatar/{{$item->customer->avatar}}" class="rounded-circle shadow-sm" width="60" height="60" alt="">
                         <div>
-                            <span class="ms-2">{{$item->customer->name}}</span> <br>
+                            <span class="ms-2">{{$item->customer->fullName}}</span> <br>
                             <span class="ms-2">{{$item->customer->email}}</span>
                         </div>
                     </td>

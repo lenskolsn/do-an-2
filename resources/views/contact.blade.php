@@ -20,7 +20,7 @@
             }
         </style>
     @stop
-    <form action="{{route('home.contact.store')}}" method="POST">
+    <form action="{{ route('home.contact.store') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-lg-6">
@@ -32,29 +32,39 @@
             <div class="col-lg-6">
                 <h2>GỬI THÔNG TIN CHO CHÚNG TÔI</h2>
                 <p>Hãy liên hệ ngay với chúng tôi để nhận được nhiều ưu đãi hấp dẫn dành cho bạn!</p>
-                <input type="hidden" name="id_customer" value="{{Auth::guard('customer')->user()->id ?? ''}}">
+                <input type="hidden" name="id_customer" value="{{ Auth::guard('customer')->user()->id ?? '' }}">
                 <div class="form-group">
-                    <input class="form-contact" type="text" name="name" value="{{Auth::guard('customer')->user()->name ?? old('name')}}" placeholder="Họ và tên">
-                    @error('name')
-                        <p class="text-danger">{{$message}}</p>
+                    <input class="form-contact" type="text" name="firstName"
+                        value="{{ Auth::guard('customer')->user()->firstName ?? old('fullName') }}" placeholder="Tên">
+                    @error('firstName')
+                        <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
-                    <input class="form-contact" type="phone" name="email" value="{{Auth::guard('customer')->user()->email ?? old('email')}}" placeholder="Email">
+                    <input class="form-contact" type="text" name="lastName"
+                        value="{{ Auth::guard('customer')->user()->lastName ?? old('lastName') }}" placeholder="Họ">
+                    @error('fullName')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <input class="form-contact" type="phone" name="email"
+                        value="{{ Auth::guard('customer')->user()->email ?? old('email') }}" placeholder="Email">
                     @error('email')
-                        <p class="text-danger">{{$message}}</p>
+                        <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
-                    <input class="form-contact" type="text" name="phone" value="{{Auth::guard('customer')->user()->phone ?? old('phone')}}" placeholder="Điện thoại">
+                    <input class="form-contact" type="text" name="phone"
+                        value="{{ Auth::guard('customer')->user()->phone ?? old('phone') }}" placeholder="Điện thoại">
                     @error('phone')
-                        <p class="text-danger">{{$message}}</p>
+                        <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="form-group">
                     <textarea class="form-contact" placeholder="Nội dung" name="content"></textarea>
                     @error('content')
-                        <p class="text-danger">{{$message}}</p>
+                        <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
                 <button class="btn-contact">

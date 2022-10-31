@@ -23,6 +23,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Mali&display=swap');
 
@@ -126,13 +127,44 @@
                             <li class="header__navbar-item navbar-item-display">
                                 <a href="#" class="header__navbar-link-right">
                                     <i class="header__navbar-icon bx bx-shopping-bag"></i>
-                                    <span class="header__navbar-icon-quantity">0</span>
+                                    <span class="header__navbar-icon-quantity">{{ $cart->total_quantity }}</span>
                                     Giỏ hàng
                                 </a>
                                 <div class="header__cart-no-cart">
-                                    <div class="header__cart-no-cart-img">
-                                        <img src="/home/img/empty-cart.webp" alt="" />
-                                    </div>
+                                    @if (!empty($cart->items))
+                                        <div class="header__cart-no-cart-img">
+                                            @foreach ($cart->items as $item)
+                                                <div
+                                                    class="row d-flex align-items-center m-0 p-0 border-bottom mb-2 py-2">
+                                                    <div class="col-lg-4">
+                                                        <img src="/storage/images/{{ $item['image'] }}" width="60"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4>{{ $item['name'] }}</h4>
+                                                        <h4 class="fw-bold">{{ number_format($item['price']) }}đ X
+                                                            {{ $item['quantity'] }}</h4>
+                                                    </div>
+                                                    <div class="col-lg-4 text-center">
+                                                        <a href="{{ route('home.giohang.remove', $item['id']) }}"><i
+                                                                class="fas fa-times text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="text-end py-2">
+                                            <p class="fw-bold" id="total_price">Tổng cộng:
+                                                {{ number_format($cart->total_price) }}đ</p>
+                                            <a href="{{ route('home.giohang') }}"
+                                                class="btn rounded-pill w-100 fs-4 p-2 text-light"
+                                                style="background: rgb(71 151 177);"><i
+                                                    class="fas fa-shopping-cart"></i> Đến trang giỏ hàng</a>
+                                        </div>
+                                    @else
+                                        <div class="text-center">
+                                            <img src="/home/img/empty-cart.webp" width="300" alt="" />
+                                        </div>
+                                    @endif
                                 </div>
                             </li>
                         </ul>
@@ -170,8 +202,8 @@
                     </ul>
                     <div class="header_-category-img">
                         <a href="" class="header__category-link">
-                            <img class="rounded-circle"
-                                src="/home/img/logo.png" width="100" height="100" id="abc" alt="" />
+                            <img class="rounded-circle" src="/home/img/logo.png" width="100" height="100"
+                                id="abc" alt="" />
                         </a>
                     </div>
                     <ul class="header__category-list">
@@ -235,19 +267,49 @@
                                     class="mt__header-icon bx bx-list-ul"></i></label>
                         </div>
                         <div class="mt__header-img">
-                            <a href=""><img src="/home/img/logo.png" 
+                            <a href=""><img src="/home/img/logo.png" width="100" height="100"
                                     alt="" /></a>
                         </div>
                         <div class="header__navbar-item navbar-item-display">
                             <a href="#" class="header__navbar-link-right">
                                 <i class="header__navbar-icon bx bx-shopping-bag"></i>
-                                <span class="header__navbar-icon-quantity">0</span>
+                                <span class="header__navbar-icon-quantity">{{ $cart->total_quantity }}</span>
                                 Giỏ hàng
                             </a>
                             <div class="header__cart-no-cart">
-                                <div class="header__cart-no-cart-img">
-                                    <img src="/home/img/empty-cart.webp" alt="" />
-                                </div>
+                                @if (!empty($cart->items))
+                                    <div class="header__cart-no-cart-img">
+                                        <div class="row d-flex align-items-center m-0 p-0 border-bottom mb-2 py-2">
+                                            @foreach ($cart->items as $item)
+                                                <div class="col-4">
+                                                    <img src="/storage/images/{{ $item['image'] }}" width="60"
+                                                        alt="">
+                                                </div>
+                                                <div class="col-4">
+                                                    <h4>{{ $item['name'] }}</h4>
+                                                    <h4 class="fw-bold">{{ number_format($item['price']) }}đ X
+                                                        {{ $item['quantity'] }}</h4>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <a href="{{ route('home.giohang.remove', $item['id']) }}"><i
+                                                            class="fas fa-times text-danger"></i></a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="text-end py-2">
+                                        <p class="fw-bold" id="total_price">Tổng cộng:
+                                            {{ number_format($cart->total_price) }}đ</p>
+                                        <a href="{{ route('home.giohang') }}"
+                                            class="btn rounded-pill w-100 fs-4 p-2 text-light"
+                                            style="background: rgb(71 151 177);"><i class="fas fa-shopping-cart"></i>
+                                            Đến trang giỏ hàng</a>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <img src="/home/img/empty-cart.webp" width="100%" alt="" />
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -259,56 +321,53 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner" style="height: 600px;">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Some representative placeholder content for the second slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://images.unsplash.com/photo-1665001167395-3432d3c51ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Some representative placeholder content for the third slide.</p>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div> --}}
-        
         <!-- slider -->
-        <div id="slider">
-
+        <div class="grid wide d-none d-md-block">
+            <div class="row py-3">
+                <div class="col-lg-12">
+                    <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            @foreach ($banner as $item)
+                                <button type="button" data-bs-target="#carouselExampleDark"
+                                    data-bs-slide-to="{{ $item->id }}"
+                                    aria-label="Slide {{ $item->id + 1 }}"></button>
+                            @endforeach
+                        </div>
+                        <div class="carousel-inner shadow">
+                            <div class="carousel-item active" data-bs-interval="10000" style="height: 550px;">
+                                <img class="rounded-3" width="100%"
+                                    src="https://bizweb.dktcdn.net/100/362/772/themes/730984/assets/bg_foo.jpg?1608300537446">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>First slide label</h5>
+                                    <p>Some representative placeholder content for the first slide.</p>
+                                </div>
+                            </div>
+                            @foreach ($banner as $item)
+                                <div class="carousel-item" data-bs-interval="5000" style="height: 550px;">
+                                    <img class="rounded-3" width="100%"src="/storage/banner/{{ $item->image }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>{{ $item->name }}</h5>
+                                        <p>{{ $item->descrition }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
         <!-- body -->
         <div id="app__container">
             {{-- Product --}}
@@ -321,9 +380,11 @@
                         <div class="content__header-title">DANH MỤC SẢN PHẨM</div>
                     </div>
                     <ul class="body__menu-nav">
-                            <li v-on:click="handleGetProduct(item.id)" class="body__menu-nav-item" :key="item.id" v-for="item in categories" style="cursor: pointer;">
-                                <a :class="{'bg-info text-light' : item.id == categoryId}" class="body__menu-nav-link body__menu-nav-link">@{{ item.name }}</a>
-                            </li>
+                        <li v-on:click="handleGetProduct(item.id)" class="body__menu-nav-item" :key="item.id"
+                            v-for="item in categories" style="cursor: pointer;">
+                            <a :class="{ 'bg-info text-light': item.id == categoryId }"
+                                class="body__menu-nav-link body__menu-nav-link">@{{ item.name }}</a>
+                        </li>
                     </ul>
                     <ul class="row body__menu-list">
                         @include('sweetalert::alert')
@@ -361,8 +422,31 @@
                 </div>
             </div>
 
-            {{-- Post Component --}}
-            <x-post />
+            {{-- Post --}}
+            <div class="body__news-wrap">
+                <div class="grid wide">
+                    <div class="content__header">
+                        <div class="content__header-title">TIN TỨC NỔI BẬT</div>
+                    </div>
+                    <ul class="row body__news-list">
+                        @foreach ($post as $item)
+                            <li class="col l-4 m-6 c-12 body__news-item">
+                                <a href="{{ route('home.new_detail', $item->id) }}" class="body__news-link">
+                                    <div class="body__news-link-img">
+                                        <img src="/storage/post/{{ $item->image }}" alt="" />
+                                    </div>
+                                </a>
+                                <a href="{{ route('home.new_detail', $item->id) }}" class="body__news-link">
+                                    <p class="body__news-link-title">
+                                        {{ $item->title }}
+                                    </p>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+
 
         </div>
 
@@ -371,9 +455,8 @@
                 <ul class="row footer__list align-items-center">
                     <li class="col l-4 m-12 c-12 footer__list-item">
                         <a href="" class="header__category-link footer-logo">
-                            <img class="rounded-circle"
-                                src="/storage/images/lsnlogo.jpg"
-                                width="80" height="80" alt="" />
+                            <img class="rounded-circle" src="/storage/images/lsnlogo.jpg" width="80"
+                                height="80" alt="" />
                         </a>
                         <div class="footer__list-item-icon">
                             <a href="" class="footer__list-item-icon-link">
@@ -434,15 +517,19 @@
         </div>
 
         <div class="go-to-head">
-            <a href="#header" title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
+            <a title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
         </div>
     </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="/axios/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/awesome-notifications/index.var.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
+    <script src="/home/js/home.js"></script>
     @yield('script')
 </body>
 

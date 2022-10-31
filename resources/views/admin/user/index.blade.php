@@ -16,6 +16,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Chức vụ</th>
                 <th>Tạo lúc</th>
                 <th>Chức năng</th>
             </tr>
@@ -27,10 +28,11 @@
                     <td class="d-flex align-items-center">
                         <img src="/storage/avatar/{{$item->avatar}}" class="rounded-circle shadow-sm" width="60" height="60" alt="">
                         <div>
-                            <span class="ms-2">{{$item->name}}</span> <br>
+                            <span class="ms-2">{{$item->fullname}}</span> <br>
                             <span class="ms-2">{{$item->email}}</span>
                         </div>
                     </td>
+                    <td>{{$item->role->name}}</td>
                     <td>{{$item->created_at->format('d/m/y H:i:s')}}</td>
                     <td>
                         <a href="{{route('admin.user.edit',$item->id)}}" class="btn btn-sm btn-warning shadow"><i class="fas fa-edit"></i></a>

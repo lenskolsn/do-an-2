@@ -2,7 +2,9 @@
 
 namespace App\View\Components;
 
+use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\View\Component;
 
 class home extends Component
@@ -25,7 +27,8 @@ class home extends Component
     public function render()
     {
         $category = Category::all();
-
-        return view('components.home',compact('category'));
+        $banner = Banner::all();
+        $post = Post::all();
+        return view('components.home',compact(['category','banner','post']));
     }
 }

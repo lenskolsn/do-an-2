@@ -1,9 +1,9 @@
 <x-admin title="Sửa khách hàng">
-    <form action="{{ route('admin.customer.store',$customer->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.customer.update',$customer->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-6">
-                <x-input value="{{$customer->name}}" name="name" label="Họ tên" />
+                <x-input value="{{$customer->fullName}}" name="fullName" label="Họ tên" />
                 <x-input value="{{$customer->email}}" name="email" type="email" label="Email" />
                 <x-input value="{{$customer->phone}}" name="phone" type="text" label="Số điện thoại" />
                 <x-input name="password" type="password" label="Mật khẩu" />

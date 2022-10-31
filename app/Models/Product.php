@@ -13,4 +13,8 @@ class Product extends Model
     {
         return $this->hasOne(Category::class,  'id', 'categoryId');
     }
+    public function order_detail()
+    {
+        return $this->hasMany(OrderDetail::class,  'id_product', 'id');
+    }
 }

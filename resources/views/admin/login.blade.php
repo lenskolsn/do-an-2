@@ -13,10 +13,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="/home/css/login.css">
     <style>
+        body{
+            background: url('https://www.sailsrestaurants.com/_cms3/wwwroot/adminPublicFiles/design/cms3admin-background-01.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
         .box{
+            width: 400px;
             position: absolute;
             top: 50%;
-            transform: translateY(-50%);
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: #EDEDED;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px #333;
         }
     </style>
 </head>
@@ -26,7 +36,7 @@
         <form action="{{ route('admin.store_login') }}" method="post">
             @csrf
             <div class="box-item">
-                <h4>Đăng nhập</h4>
+                <h4>Đăng nhập Admin</h4>
                 <input name="email" value="{{old('email')}}" placeholder="Email" type="email">
                 @error('email')
                 <span style="color: red; font-size: 13px;">{{ $message }}</span>

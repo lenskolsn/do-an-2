@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Post as ModelsPost;
 use Illuminate\View\Component;
 
 class post extends Component
@@ -23,6 +24,7 @@ class post extends Component
      */
     public function render()
     {
+
         return view('components.post');
     }
 }

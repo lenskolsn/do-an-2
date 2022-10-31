@@ -2,6 +2,7 @@
 #active{
     color: var(--primary-color);
 }
+
 #header{
     width: 100%;
     box-shadow: 0 0 1px grey;
@@ -151,13 +152,13 @@
 }
 /* cart */
 .header__cart-no-cart{
+    width: 350px;
     position: absolute;
     background-color: var(--white-color);
     right: 0;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     border-radius: 3px;
     top: calc(var(--navbar-height) - 12px);
-    text-align: center;
     padding: 16px;
     animation: growDown linear 0.25s;
     transform-origin: calc(100% - 20px) top;
@@ -169,7 +170,6 @@
 }
 .header__cart-no-cart::before{
     position: absolute;
-    
     content: "";
     top: -30px;
     right: 16px;
@@ -188,12 +188,27 @@
     
 }
 .header__cart-no-cart-img{
-    width: 300px;
-}
-.header__cart-no-cart-img img{
-    width: 80%;
+    width: 100%;
+    height: 400px;
+    overflow-y: scroll;
 }
 
+.header__cart-no-cart-img::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.header__cart-no-cart-img::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.header__cart-no-cart-img::-webkit-scrollbar-thumb
+{
+	background-color: var(--primary-color);
+}
 
 /* Category */
 .header__category{
@@ -208,9 +223,6 @@
     margin-right: 65px;
     display: flex;
     align-items: center;
-}
-.abc{
-    /* width: 30px; */
 }
 .header__category-list{
     display: flex;
@@ -336,8 +348,6 @@
     top: 0;
     
 }
-
-
 
 /* slider */
 #slider{
@@ -483,9 +493,7 @@
 .body__menu-wrap{
     padding-bottom: 50px;
 }
-.body__menu-list-item{
-    /* margin-top: 50px; */
-}
+
 .body__menu-list-link-btn{
     
     position: absolute;
@@ -523,16 +531,22 @@
     max-width: 260px;
     border: 1px solid #ebebeb;
     position: relative;
+    overflow: hidden;
 }
 .body__menu-list-link-img-btn img:hover{
-    animation: zoomSmall linear 1s;
-    -o-animation:  zoomSmall linear 1s;
-    -moz-animation:  zoomSmall linear 1s;
-    -webkit-animation:  zoomSmall linear 1s;
-    -ms-animation:  zoomSmall linear 1s;
+    transform: scale(1.05);
 }
 .body__menu-list-link-img-btn img{
     width: 100%;
+}
+.body__menu-list-link-img-btn #btn_add_cart{
+    opacity: 0;
+    transform: translateY(25px);
+}
+.body__menu-list-item:hover #btn_add_cart{
+    opacity: 1;
+    transition: .3s;
+    transform: translateY(0px);
 }
 .body__menu-list-link-desc{
     font-size: 1.8rem;

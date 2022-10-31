@@ -8,20 +8,29 @@ use Illuminate\Support\Facades\Validator;
 
 class BannerController extends Controller
 {
-    function index(){
-        $banner = Banner::orderByDesc('id')->paginate(2);
-        return view('admin.banner.index',compact('banner'));
+    function index($id = null){
+        $banners = Banner::orderByDesc('id')->paginate(2);
+        $banner = null;
+        if($id){
+            $banner = Banner::find($id);
+        }
+        return view('admin.banner.index',compact(['banners','banner']));
     }
-    function add(){
-        return view('admin.banner.add');
+    function edit($id=null){
+        $banner = Banner::find($id);
+        return view('admin.banner.edit',compact('banner'));
     }
-    function store(Request $request){
+    function store(Request $request,$id=null){
         $data = $request->all();
         unset($data['_token']);
         
         $validator = Validator::make($data,[
-            'image'=>'required'
+            'title'=>'required',
+            'description'=>'required',
+            'image'=>$id ? '' : 'required'
         ],[],[
+            'title'=>'Tiêu đề',
+            'description'=>'Mô tả',
             'image'=>'Hình ảnh'
         ])->validate();
 
@@ -32,10 +41,18 @@ class BannerController extends Controller
             $data['image'] = $filename;
         }
 
-        $banner = Banner::updateOrCreate($data);
+        if($id){
+            $action = 'Cập nhật banner thành công!';
+        }else{
+            $action = 'Thêm banner thành công!';
+        }
+
+        $banner = Banner::updateOrCreate(['id'=>$id],$data);
         $banner->save();
 
-        return back();
+        toast()->success($action);
+
+        return redirect()->route('admin.banner');
     }
     function delete($id){
         Banner::destroy($id);

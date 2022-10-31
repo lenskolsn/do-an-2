@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('image');
             $table->integer('price');
             $table->text('description');
-
+            // Khóa ngoại
             $table->integer('categoryId')->unsigned();
             $table->foreign('categoryId')->references('id')->on('categories');
 

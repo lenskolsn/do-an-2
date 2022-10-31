@@ -1,18 +1,24 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('test',function(){
+Route::get('test', function () {
     return view('test');
 });
 // Client
@@ -37,6 +43,8 @@ Route::prefix("/")->group(function () {
     Route::get('/chi-tiet/{id?}', [HomeController::class, 'product_detail'])->name("home.product_detail");
     // Trang thông tin  
     Route::get('/thong-tin', [CustomerController::class, 'info'])->name("home.info")->middleware('customer');
+    // Đổi Avatar
+    Route::post('/doi-avatar', [HomeController::class, 'changeAvatar'])->name("home.customer.changeAvatar")->middleware('customer');
     // Trang tin tức
     Route::get('/tin-tuc', [HomeController::class, 'news'])->name("home.news");
     // Trang chi tiết bài viết
@@ -48,11 +56,22 @@ Route::prefix("/")->group(function () {
     // Reply
     Route::post('/tra-loi', [ReplyController::class, 'store'])->name('home.reply.store')->middleware('customer');
     // Liên hệ
-    Route::get('/lien-he',[HomeController::class, 'contact'])->name('home.contact');
-    Route::post('/lien-he',[HomeController::class, 'contact_store'])->name('home.contact.store');
+    Route::get('/lien-he', [HomeController::class, 'contact'])->name('home.contact');
+    Route::post('/lien-he', [HomeController::class, 'contact_store'])->name('home.contact.store');
     // Thực đơn
-    Route::get('/thuc-don',[HomeController::class, 'menu'])->name('home.menu');
-    
+    Route::get('/thuc-don', [HomeController::class, 'menu'])->name('home.menu');
+    // Giỏ hàng
+    Route::prefix('/gio-hang')->middleware('customer')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('home.giohang');
+        Route::get('/add/{id?}', [CartController::class, 'add'])->name('home.giohang.add');
+        Route::post('/update', [CartController::class, 'update'])->name('home.giohang.update');
+        Route::get('/remove/{id?}', [CartController::class, 'remove'])->name('home.giohang.remove');
+        Route::get('/clearAll', [CartController::class, 'clearAll'])->name('home.giohang.clearAll');
+    });
+    // Thanh toán
+    Route::get('/thanh-toan', [HomeController::class, 'pay'])->name('home.thanhtoan');
+    // Đặt hàng
+    Route::post('/dat-hang', [HomeController::class, 'order'])->name('home.dathang');
 });
 // Admin
 Route::prefix('admin')->group(function () {
@@ -66,10 +85,17 @@ Route::prefix('admin')->group(function () {
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
-
     // Sản phẩm
     Route::prefix('products')->middleware('auth')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('admin.product');
+        Route::get('/add', [ProductController::class, 'add'])->name('admin.product.add');
+        Route::get('/edit/{id?}', [ProductController::class, 'edit'])->name('admin.product.edit');
+        Route::get('/delete/{id?}', [ProductController::class, 'delete'])->name('admin.product.delete');
+        Route::post('/store', [ProductController::class, 'store'])->name('admin.product.store');
+        Route::post('/update/{id?}', [ProductController::class, 'update'])->name('admin.product.update');
+
+        Route::get('/product-category', [ProductController::class, 'product_category'])->name('admin.product.product_category');
+
         Route::get('/list', [ProductController::class, 'list']);
     });
     // Danh mục
@@ -77,12 +103,19 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin.category');
     });
     // User
-    Route::prefix('users')->middleware('auth')->group(function () {
+    Route::prefix('users')->middleware('auth', 'admin')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('admin.user');
         Route::get('/add', [UserController::class, 'add'])->name('admin.user.add');
         Route::get('/edit/{id?}', [UserController::class, 'edit'])->name('admin.user.edit');
-        Route::post('/store/{id?}', [UserController::class, 'store'])->name('admin.user.store');
+        Route::post('/store', [UserController::class, 'store'])->name('admin.user.store');
+        Route::post('/update/{id?}', [UserController::class, 'update'])->name('admin.user.update');
         Route::get('/delete/{id?}', [UserController::class, 'delete'])->name('admin.user.delete');
+    });
+    // Role
+    Route::prefix('roles')->middleware('auth', 'admin')->group(function () {
+        Route::get('/{id?}', [RoleController::class, 'index'])->name('admin.role');
+        Route::post('/store/{id?}', [RoleController::class, 'store'])->name('admin.role.store');
+        Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('admin.role.delete');
     });
     // Khách hàng
     Route::prefix('customers')->middleware('auth')->group(function () {
@@ -90,6 +123,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/add', [CustomerController::class, 'add'])->name('admin.customer.add');
         Route::get('/edit/{id?}', [CustomerController::class, 'edit'])->name('admin.customer.edit');
         Route::post('/store/{id?}', [CustomerController::class, 'store'])->name('admin.customer.store');
+        Route::post('/update/{id?}', [CustomerController::class, 'update'])->name('admin.customer.update');
         Route::get('/delete/{id?}', [CustomerController::class, 'delete'])->name('admin.customer.delete');
     });
     // Bài viết
@@ -108,13 +142,41 @@ Route::prefix('admin')->group(function () {
         Route::post('/store/{id?}', [CommentController::class, 'store'])->name('admin.comment.store');
         Route::get('/delete/{id?}', [CommentController::class, 'delete'])->name('admin.comment.delete');
     });
-
+    // Banner
     Route::prefix('banners')->group(function () {
-        Route::get('/', [BannerController::class, 'index'])->name('admin.banner');
-        Route::get('/add', [BannerController::class, 'add'])->name('admin.banner.add');
+        Route::get('/{id?}', [BannerController::class, 'index'])->name('admin.banner');
         Route::get('/edit/{id?}', [BannerController::class, 'edit'])->name('admin.banner.edit');
         Route::post('/store/{id?}', [BannerController::class, 'store'])->name('admin.banner.store');
         Route::get('/delete/{id?}', [BannerController::class, 'delete'])->name('admin.banner.delete');
     });
-    
+    // Giới thiệu
+    Route::prefix('abouts')->group(function () {
+        Route::get('/', [AboutController::class, 'index'])->name('admin.about');
+        Route::get('/add', [AboutController::class, 'add'])->name('admin.about.add');
+        Route::get('/edit/{id?}', [AboutController::class, 'edit'])->name('admin.about.edit');
+        Route::post('/store/{id?}', [AboutController::class, 'store'])->name('admin.about.store');
+        Route::get('/delete/{id?}', [AboutController::class, 'delete'])->name('admin.about.delete');
+    });
+    // Liên hệ
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('admin.contact');
+        Route::get('/add', [ContactController::class, 'add'])->name('admin.contact.add');
+        Route::get('/edit/{id?}', [ContactController::class, 'edit'])->name('admin.contact.edit');
+        Route::post('/store/{id?}', [ContactController::class, 'store'])->name('admin.contact.store');
+        Route::get('/delete/{id?}', [ContactController::class, 'delete'])->name('admin.contact.delete');
+    });
+    // Đơn hàng
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('admin.order');
+        Route::get('/add', [OrderController::class, 'add'])->name('admin.order.add');
+        Route::get('/edit/{id?}', [OrderController::class, 'edit'])->name('admin.order.edit');
+        Route::post('/store/{id?}', [OrderController::class, 'store'])->name('admin.order.store');
+        Route::get('/delete/{id?}', [OrderController::class, 'delete'])->name('admin.order.delete');
+    });
+    // Trạng thái đơn hàng
+    Route::prefix('order-statuses')->group(function () {
+        Route::get('/{id?}', [OrderStatusController::class, 'index'])->name('admin.order_status');
+        Route::post('/store/{id?}', [OrderStatusController::class, 'store'])->name('admin.order_status.store');
+        Route::get('/delete/{id?}', [OrderStatusController::class, 'delete'])->name('admin.order_status.delete');
+    });
 });

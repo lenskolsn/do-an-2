@@ -87,9 +87,10 @@ class ProductController extends Controller
         
         $file = $request->file('image');
         
+        $pro = Product::find($id);
+
         if ($id) {
-            $pro = Product::find($id);
-            if($file != null && $pro->image != 'default.png'){
+            if($file != null || $pro->image != 'default.png'){
                 Storage::delete('/public/images/'.$pro->image);
             }else{
                 $data['image'] = $pro->image;

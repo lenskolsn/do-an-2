@@ -10,7 +10,7 @@
                         class="rounded-circle shadow" width="150" height="150" alt="">
                     {{-- Fo1m Lưu avatar --}}
                     <form
-                        action=""
+                        action="{{route('home.customer.changeAvatar')}}"
                         class="mt-3" method="post" enctype="multipart/form-data">
                         @csrf
                         <label for="upload_avatar" class="badge bg-dark fs-5" style="cursor: pointer;"><i
@@ -52,4 +52,15 @@
         </div>
     </div>
 </div>
+@section('script')
+    <script>
+        const upload_avatar = document.querySelector('#upload_avatar');
+        let avatar_khachhang = document.querySelector('#avatar_khachhang');
+        upload_avatar.onchange = (e)=>{
+            let file = e.target.files[0];
+            let url = URL.createObjectURL(file);
+            avatar_khachhang.setAttribute('src',url);
+        }
+    </script>
+@endsection
 </x-only-header>

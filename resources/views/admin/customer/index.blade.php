@@ -27,9 +27,9 @@
                     <td class="d-flex align-items-center">
                         <img src="/storage/avatar/{{$item->avatar}}" class="rounded-circle shadow-sm" width="60" height="60" alt="">
                         <div>
-                            <span class="ms-2"><i class="fas fa-user"></i> {{$item->fullName}}</span> <br>
-                            <span class="ms-2"><i class="fas fa-envelope"></i> {{$item->email}}</span> <br>
-                            <span class="ms-2"><i class="fas fa-phone"></i> {{$item->phone}}</span>
+                            <span class="ms-2">{{$item->fullName}}</span> <br>
+                            <span class="ms-2">{{$item->email}}</span> <br>
+                            <span class="ms-2">{{$item->phone}}</span>
                         </div>
                     </td>
                     <td>{{$item->created_at->format('d/m/y H:i:s')}}</td>

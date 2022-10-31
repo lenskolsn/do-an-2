@@ -14,7 +14,8 @@
                 <img src="" id="imageCustomer" width="200" alt="">
             </div>
             <div class="col-lg-12">
-                <a href="{{route('admin.customer')}}" class="btn btn-sm btn-dark" id="saveBtn"><i class="fas fa-arrow-left"></i> Trở lại</a>
+                <a href="{{ route('admin.customer') }}" class="btn btn-sm btn-dark" id="saveBtn"><i
+                        class="fas fa-arrow-left"></i> Trở lại</a>
                 <button class="btn btn-sm btn-primary" id="saveBtn"><i class="fas fa-save"></i> Lưu</button>
             </div>
         </div>

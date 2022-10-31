@@ -17,12 +17,12 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/ad/dist/css/adminlte.min.css') }}">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/awesome-notifications/style.css" />
     <link rel="stylesheet" href="/css/app.css">
     <script src="/ckeditor/ckeditor.js"></script>
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -30,7 +30,7 @@
     <div class="#app">
         <div class="wrapper" id="admin-wrapper">
             <!-- Navbar -->
-            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <nav class="main-header navbar navbar-expand navbar-light navbar-light">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -38,26 +38,23 @@
                                 class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Contact</a>
+                        <a href="{{ route('home') }}" class="nav-link">Home</a>
                     </li>
                 </ul>
 
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
                     <li class="nav-item">
-                        <img src="/storage/avatar/{{Auth::user()->avatar ?? ''}}" class="rounded-circle shadow-sm"
+                        <img src="/storage/avatar/{{ Auth::user()->avatar ?? '' }}" class="rounded-circle shadow-sm"
                             width="40" height="40" alt="">
                     </li>
                     <li class="nav-item mx-2">
                         <a href="" class="text-decoration-none text-dark">
                             <span>
-                                {{ Auth::user()->name ?? 'Lensko'}}
+                                {{ Auth::user()->fullname ?? 'Lensko' }}
                             </span>
                         </a>/
-                        <a class="text-decoration-none text-dark me-3" href="{{route('admin.logout')}}">Đăng xuất
+                        <a class="text-decoration-none text-dark me-3" href="{{ route('admin.logout') }}">Đăng xuất
                             <i class="fas fa-sign-out-alt"></i></a>
                     </li>
                 </ul>
@@ -66,15 +63,16 @@
             <!-- /.navbar -->
 
             <!-- Main Sidebar Container -->
-            <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
+            <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4"
+                style="background: url('https://www.enjpg.com/img/2020/4k-for-mobile-3.jpg'); background-size: cover;">
                 <!-- Sidebar -->
                 <div class="sidebar">
                     <!-- Sidebar user (optional) -->
                     <div class="mt-3 ms-3 pb-3 mb-3 d-flex align-items-center">
-                        <img src="/storage/avatar/{{Auth::user()->avatar ?? ''}}" class="rounded-circle shadow-sm"
-                        width="40" height="40">
+                        <img src="/storage/avatar/{{ Auth::user()->avatar ?? '' }}" class="rounded-circle shadow-sm"
+                            width="40" height="40">
                         <span class="ms-2 fw-bold text-light">
-                            {{ Auth::user()->name ?? 'Lensko'}}
+                            {{ Auth::user()->fullname ?? 'Lensko' }}
                         </span>
                     </div>
 
@@ -85,7 +83,7 @@
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <li class="nav-item">
-                                <a href="{{route('admin.dashboard')}}" class="nav-link">
+                                <a href="{{ route('admin.dashboard') }}" class="nav-link">
                                     <i class="nav-icon fas fa-chalkboard"></i>
                                     <p>
                                         Dashboard
@@ -93,7 +91,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.category')}}" class="nav-link">
+                                <a href="{{ route('admin.category') }}" class="nav-link">
                                     <i class="nav-icon fas fa-tasks"></i>
                                     <p>
                                         Danh mục
@@ -101,7 +99,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.product')}}" class="nav-link">
+                                <a href="{{ route('admin.product') }}" class="nav-link">
                                     <i class="nav-icon fas fa-truck"></i>
                                     <p>
                                         Sản phẩm
@@ -109,23 +107,41 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{ route('admin.order_status') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-wrench"></i>
+                                    <p>
+                                        Trạng thái
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.order') }}" class="nav-link">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>
                                         Đơn hàng
                                     </p>
                                 </a>
                             </li>
+                            @if (Auth::user()->role->id == 2)
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.role') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-user-shield"></i>
+                                        <p>
+                                            Role
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.user') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-user-astronaut"></i>
+                                        <p>
+                                            Nhân viên
+                                        </p>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item">
-                                <a href="{{route('admin.user')}}" class="nav-link">
-                                    <i class="nav-icon fas fa-user-astronaut"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('admin.customer')}}" class="nav-link">
+                                <a href="{{ route('admin.customer') }}" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>
                                         Khách hàng
@@ -133,7 +149,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.post')}}" class="nav-link">
+                                <a href="{{ route('admin.post') }}" class="nav-link">
                                     <i class="nav-icon fas fa-signature"></i>
                                     <p>
                                         Bài viết
@@ -141,7 +157,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.comment')}}" class="nav-link">
+                                <a href="{{ route('admin.comment') }}" class="nav-link">
                                     <i class="nav-icon fas fa-comment"></i>
                                     <p>
                                         Bình luận
@@ -149,7 +165,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.banner')}}" class="nav-link">
+                                <a href="{{ route('admin.banner') }}" class="nav-link">
                                     <i class="nav-icon fas fa-image"></i>
                                     <p>
                                         Banner
@@ -157,7 +173,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{ route('admin.about') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-seedling"></i>
+                                    <p>
+                                        Giới thiệu
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.contact') }}" class="nav-link">
                                     <i class="nav-icon fas fa-phone"></i>
                                     <p>
                                         Liên hệ
@@ -182,7 +206,7 @@
                                 <!-- Default box -->
                                 <div class="card">
                                     <div class="card-header bg-light">
-                                        <h3 class="card-title">{{ $attributes['title'] }}</h3>
+                                        <h3 class="card-title badge bg-dark">{{ $attributes['title'] }}</h3>
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"
                                                 title="Collapse">
@@ -196,6 +220,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div id="app">
+                                            @include('sweetalert::alert')
                                             {{ $slot }}
                                         </div>
                                     </div>

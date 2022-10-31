@@ -13,10 +13,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="/home/css/login.css">
     <style>
-        .box{
+        body {
+            background: url('https://www.sailsrestaurants.com/_cms3/wwwroot/adminPublicFiles/design/cms3admin-background-01.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .box {
+            width: 400px;
             position: absolute;
             top: 50%;
-            transform: translateY(-50%);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #EDEDED;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px #333;
         }
     </style>
 </head>
@@ -26,13 +37,21 @@
         <form action="{{ route('admin.store_register') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="box-item">
-                <h4>Đăng ký</h4>
-                <input name="name" value="{{ old('name') }}" placeholder="Họ tên" type="text">
-                @error('name')
+                <h4>Đăng ký Admin</h4>
+                <input name="fullName" value="{{ old('fullName') }}" placeholder="Họ tên" type="text">
+                @error('fullName')
                     <span style="color: red; font-size: 13px;">{{ $message }}</span>
                 @enderror
                 <input name="email" value="{{ old('email') }}" placeholder="Email" type="email">
                 @error('email')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="phone" value="{{ old('phone') }}" placeholder="Số điện thoại" type="phone">
+                @error('phone')
+                    <span style="color: red; font-size: 13px;">{{ $message }}</span>
+                @enderror
+                <input name="address" value="{{ old('address') }}" placeholder="Địa chỉ" type="address">
+                @error('address')
                     <span style="color: red; font-size: 13px;">{{ $message }}</span>
                 @enderror
                 <input name="password" value="{{ old('password') }}" placeholder="Mật khẩu" type="password">
@@ -45,7 +64,8 @@
                     <span style="color: red; font-size: 13px;">{{ $message }}</span>
                 @enderror
                 <button>ĐĂNG KÝ</button>
-                <p>Đã có tài khoản, đăng nhập <a href="{{ route('admin.login') }}" class="text-decoration-none">tại đây</a></p>
+                <p>Đã có tài khoản, đăng nhập <a href="{{ route('admin.login') }}" class="text-decoration-none">tại
+                        đây</a></p>
             </div>
         </form>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +81,7 @@ class CustomerController extends Controller
 
         $cus = Customer::updateOrCreate($data);
         $cus->save();
-        
+
         Alert::success('Đăng ký thành công!');
         return redirect()->route('home.login');
     }
@@ -100,16 +101,87 @@ class CustomerController extends Controller
     }
     function delete($id)
     {
-        Customer::destroy($id);
-        return back();
+        $customer = Customer::find($id);
+        // Nếu khách hàng có comment
+        if ($customer->comment) {
+            foreach ($customer->comment as $item) {
+                $item->delete();
+            }
+        }
+        // Nếu khách hàng có phản hồi
+        if ($customer->comment) {
+            foreach ($customer->comment as $item) {
+                $item->delete();
+            }
+        }
+        if ($customer->delete()) {
+            toast()->success('Xóa khách hàng thành công!');
+            return back();
+        }
     }
-    function store(Request $request, $id = null)
+    function store(Request $request)
     {
         $data = $request->all();
+
+        $this->customValidate($data);
+
+        unset($data['_token']);
+        unset($data['confirm_password']);
+
+        $file = $request->file('avatar');
+
+        $file = $request->file('avatar');
+        if ($file) {
+            $filename = rand() . $file->getClientOriginalName();
+            $file->storeAs('/public/avatar', $filename);
+            $data['avatar'] = $filename;
+        } else {
+            $data['avatar'] = 'default.png';
+        }
+
+        $cus = Customer::updateOrCreate($data);
+        $cus->save();
+
+        return redirect()->route('admin.customer');
+    }
+    function update(Request $request, $id = null)
+    {
+        $data = $request->all();
+        $this->customValidate($data, $id);
+
+        unset($data['_token']);
+        unset($data['confirm_password']);
+
+        $file = $request->file('avatar');
+        $customer = Customer::find($id);
+
+        if ($file) {
+            $filename = rand() . $file->getClientOriginalName();
+            $file->storeAs('/public/avatar', $filename);
+            $data['avatar'] = $filename;
+            if ($customer->avatar != 'default.png') {
+                Storage::delete('/public/avatar/' . $customer->avatar);
+            }
+        } else {
+            $data['avatar'] = $customer->avatar;
+        }
+
+        if ($data['password'] != null) {
+            $data['password'] = Hash::make($request->password);
+        } else {
+            $data['password'] = $customer->password;
+        }
+
+        $customer->update($data);
+        $customer->save();
+        return redirect()->route('admin.customer');
+    }
+    function customValidate($data, $id = null)
+    {
         $validator = Validator::make($data, [
             'fullName' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'password' => $id ? '' : 'required',
             'confirm_password' => $id ? '' : 'required|same:password'
         ], [], [
@@ -120,38 +192,6 @@ class CustomerController extends Controller
             'confirm_password' => 'Nhập lại mật khẩu'
         ])->validate();
 
-        unset($data['_token']);
-        unset($data['confirm_password']);
-
-        $file = $request->file('avatar');
-
-        if ($id) {
-            $cusOld = Customer::find($id);
-            if ($file != null && $cusOld->avatar != 'default.png') {
-                Storage::delete('/public/avatar/' . $cusOld->avatar);
-            } else {
-                $data['avatar'] = $cusOld->avatar;
-            }
-            if ($data['password'] != null) {
-                $data['password'] = Hash::make($request->password);
-            } else {
-                $data['password'] = $cusOld->password;
-            }
-        } else {
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        if ($file) {
-            $filename = $file->hashName();
-            $file->storeAs('/public/avatar', $filename);
-            $data['avatar'] = $filename;
-        } else {
-            $data['avatar'] = 'default.png';
-        }
-
-        $cus = Customer::updateOrCreate(['id' => $id], $data);
-        $cus->save();
-
-        return redirect()->route('admin.customer');
+        return $validator;
     }
 }

@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\CartHelper;
+use App\Models\About;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Contact;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -19,7 +25,7 @@ class HomeController extends Controller
     {
         $firstCategory = Category::first();
         $product = Product::all();
-        return view('welcome', compact('product','firstCategory'));
+        return view('welcome', compact('product', 'firstCategory'));
     }
     function search(Request $request)
     {
@@ -29,7 +35,8 @@ class HomeController extends Controller
     }
     function about()
     {
-        return view('about');
+        $about = About::all();
+        return view('about', compact('about'));
     }
     function news()
     {
@@ -43,7 +50,7 @@ class HomeController extends Controller
         // Lấy ra bài viết mới nhất
         $posts = Post::orderByDesc('id')->get();
         // Lấy ra comment   
-        $comment = Comment::orderBy('id', 'desc')->get();
+        $comment = Comment::where('id_post', $post->id)->orderBy('id', 'desc')->get();
         // Tăng lượt xem khi click vào
         $post->update(['views' => $post->views + 1]);
         $post->save();
@@ -62,16 +69,16 @@ class HomeController extends Controller
     }
     function contact_store(Request $request)
     {
-
         $data = $request->all();
-
         $validator = Validator::make($data, [
-            'name' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
             'email' => 'required',
             'phone' => 'required|min:8|max:11|regex:/^([0-9\s\-\+\(\)]*)$/',
             'content' => 'required',
         ], [], [
-            'name' => 'Họ tên',
+            'firstName' => 'Tên',
+            'lastName' => 'Họ',
             'email' => 'Email',
             'phone' => 'Số điện thoại',
             'content' => 'Nội dung',
@@ -87,12 +94,78 @@ class HomeController extends Controller
         }
         return back();
     }
-    function menu(){
+    function menu()
+    {
         $category = Category::orderByDesc('id')->get();
-        return view('menu',compact('category'));
+        return view('menu', compact('category'));
     }
-    function product_detail($id = null){
-        $product= Product::find($id);
-        return view('product_detail',compact('product'));
+    function product_detail($id = null)
+    {
+        $product = Product::find($id);
+        return view('product_detail', compact('product'));
+    }
+    function changeAvatar(Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+
+        $id = Auth::guard('customer')->user()->id;
+        $old_customer = Customer::find($id);
+
+        $file = $request->file('avatar');
+        if ($file) {
+            $filename = $file->hashName();
+            $file->storeAs('/public/avatar', $filename);
+            $data['avatar'] = $filename;
+        } else {
+            $data['avatar'] = $old_customer->avatar;
+        }
+
+        if ($file && $old_customer->avatar != 'default.png') {
+            Storage::delete('/public/avatar/' . $old_customer->avatar);
+        }
+
+        $cus = Customer::updateOrCreate(['id' => $id], $data);
+        $cus->save();
+        toast()->success('Cập nhật avatar thành công!');
+
+        return redirect()->route('home.info');
+    }
+    function pay()
+    {
+        return view('pay');
+    }
+    function order(CartHelper $cart, Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+
+        $validator = Validator::make($data, [
+            'email' => 'required',
+            'fullName' => 'required',
+        ], [], [
+            'email' => 'Email',
+            'fullName' => 'Họ và tên',
+        ])->validate();
+
+        $data['total'] = $cart->total_price;
+        $order = Order::updateOrCreate($data);
+        
+        if ($order) {
+            foreach ($cart->items as $item) {
+                $data_order = [
+                    'id_order' => $order->id,
+                    'id_product' => $item['id'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity']
+                ];
+                OrderDetail::create($data_order);
+            }
+            $cart->clearAll();
+            alert()->success('Đặt hàng thành công!');
+            return redirect()->route('home');
+        } else {
+            alert()->warning('Đặt hàng không thành công!');
+        }
     }
 }

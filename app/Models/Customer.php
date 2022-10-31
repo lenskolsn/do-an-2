@@ -12,10 +12,11 @@ class Customer extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use HasFactory;
     protected $guarded = [];
+
     public function comment(){
-        return $this->hasMany(Comment::class, 'id', 'id_customer');
+        return $this->hasMany(Comment::class, 'id_customer', 'id');
     }
-    public function reply(){
-        return $this->hasMany(Reply::class, 'id_comment', 'id');
+    public function contact(){
+        return $this->hasMany(Contact::class, 'id_customer', 'id');
     }
 }

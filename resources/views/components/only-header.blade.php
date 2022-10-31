@@ -130,13 +130,44 @@
                             <li class="header__navbar-item navbar-item-display">
                                 <a href="#" class="header__navbar-link-right">
                                     <i class="header__navbar-icon bx bx-shopping-bag"></i>
-                                    <span class="header__navbar-icon-quantity">0</span>
+                                    <span class="header__navbar-icon-quantity">{{ $cart->total_quantity }}</span>
                                     Giỏ hàng
                                 </a>
                                 <div class="header__cart-no-cart">
-                                    <div class="header__cart-no-cart-img">
-                                        <img src="/home/img/empty-cart.webp" alt="" />
-                                    </div>
+                                    @if (!empty($cart->items))
+                                        <div class="header__cart-no-cart-img">
+                                            @foreach ($cart->items as $item)
+                                                <div
+                                                    class="row d-flex align-items-center m-0 p-0 border-bottom mb-2 py-2">
+                                                    <div class="col-lg-4">
+                                                        <img src="/storage/images/{{ $item['image'] }}" width="60"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4>{{ $item['name'] }}</h4>
+                                                        <h4 class="fw-bold">{{ number_format($item['price']) }}đ X
+                                                            {{ $item['quantity'] }}</h4>
+                                                    </div>
+                                                    <div class="col-lg-4 text-center">
+                                                        <a href="{{ route('home.giohang.remove', $item['id']) }}"><i
+                                                                class="fas fa-times text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="text-end py-2">
+                                            <p class="fw-bold" id="total_price">Tổng cộng:
+                                                {{ number_format($cart->total_price) }}đ</p>
+                                            <a href="{{ route('home.giohang') }}"
+                                                class="btn rounded-pill w-100 fs-4 p-2 text-light"
+                                                style="background: rgb(71 151 177);"><i
+                                                    class="fas fa-shopping-cart"></i> Đến trang giỏ hàng</a>
+                                        </div>
+                                    @else
+                                        <div class="text-center">
+                                            <img src="/home/img/empty-cart.webp" width="300" alt="" />
+                                        </div>
+                                    @endif
                                 </div>
                             </li>
                         </ul>
@@ -187,10 +218,12 @@
                                 class="header__category-link">Tin tức</a>
                         </li>
                         <li class="header__category-item">
-                            <a id="{{ request()->routeIs('home.menu') ? 'active' : '' }}" href="{{ route('home.menu') }}" class="header__category-link">Thực đơn</a>
+                            <a id="{{ request()->routeIs('home.menu') ? 'active' : '' }}"
+                                href="{{ route('home.menu') }}" class="header__category-link">Thực đơn</a>
                         </li>
                         <li class="header__category-item">
-                            <a id="{{ request()->routeIs('home.contact') ? 'active' : '' }}" href="{{ route('home.contact') }}" class="header__category-link">Liên hệ</a>
+                            <a id="{{ request()->routeIs('home.contact') ? 'active' : '' }}"
+                                href="{{ route('home.contact') }}" class="header__category-link">Liên hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -249,13 +282,43 @@
                         <div class="header__navbar-item navbar-item-display">
                             <a href="#" class="header__navbar-link-right">
                                 <i class="header__navbar-icon bx bx-shopping-bag"></i>
-                                <span class="header__navbar-icon-quantity">0</span>
+                                <span class="header__navbar-icon-quantity">{{ $cart->total_quantity }}</span>
                                 Giỏ hàng
                             </a>
                             <div class="header__cart-no-cart">
-                                <div class="header__cart-no-cart-img">
-                                    <img src="/home/img/empty-cart.webp" alt="" />
-                                </div>
+                                @if (!empty($cart->items))
+                                    <div class="header__cart-no-cart-img">
+                                        <div class="row d-flex align-items-center m-0 p-0 border-bottom mb-2 py-2">
+                                            @foreach ($cart->items as $item)
+                                                <div class="col-4">
+                                                    <img src="/storage/images/{{ $item['image'] }}" width="60"
+                                                        alt="">
+                                                </div>
+                                                <div class="col-4">
+                                                    <h4>{{ $item['name'] }}</h4>
+                                                    <h4 class="fw-bold">{{ number_format($item['price']) }}đ X
+                                                        {{ $item['quantity'] }}</h4>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <a href="{{ route('home.giohang.remove', $item['id']) }}"><i
+                                                            class="fas fa-times text-danger"></i></a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="text-end py-2">
+                                        <p class="fw-bold" id="total_price">Tổng cộng:
+                                            {{ number_format($cart->total_price) }}đ</p>
+                                        <a href="{{ route('home.giohang') }}"
+                                            class="btn rounded-pill w-100 fs-4 p-2 text-light"
+                                            style="background: rgb(71 151 177);"><i class="fas fa-shopping-cart"></i>
+                                            Đến trang giỏ hàng</a>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <img src="/home/img/empty-cart.webp" width="100%" alt="" />
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -286,7 +349,8 @@
                 <ul class="row footer__list align-items-center">
                     <li class="col l-4 m-12 c-12 footer__list-item">
                         <a href="" class="header__category-link footer-logo">
-                            <img src="/storage/images/lsnlogo.jpg" class="rounded-circle" width="100" height="100" alt="" />
+                            <img src="/storage/images/lsnlogo.jpg" class="rounded-circle" width="100"
+                                height="100" alt="" />
                         </a>
                         <div class="footer__list-item-icon">
                             <a href="" class="footer__list-item-icon-link">
@@ -351,6 +415,9 @@
             <a href="#header" title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/awesome-notifications/index.var.js"></script>

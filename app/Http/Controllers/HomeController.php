@@ -10,8 +10,10 @@ use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\OrderStatus;
 use App\Models\Post;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -147,9 +149,23 @@ class HomeController extends Controller
             'email' => 'Email',
             'fullName' => 'Họ và tên',
         ])->validate();
+        
+        $order_status_first = OrderStatus::first()->id;
 
-        $data['total'] = $cart->total_price;
-        $order = Order::updateOrCreate($data);
+        $dt = [
+            'fullName'=>$data['fullName'],
+            'email'=>$data['email'],
+            'address'=>$data['address'],
+            'phone'=>$data['phone'],
+            'note'=>$data['note'],
+            'total'=>$cart->total_price,
+            'id_status'=>$order_status_first,
+            'id_customer'=>Auth::guard('customer')->user()->id,
+            'created_at'=>Carbon::now(),
+            'updated_at'=>Carbon::now(),
+        ];
+
+        $order = Order::updateOrCreate($dt);
         
         if ($order) {
             foreach ($cart->items as $item) {

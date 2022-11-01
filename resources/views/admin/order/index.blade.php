@@ -27,7 +27,7 @@
                     <td style="vertical-align: middle;" class="fw-bold">{{ number_format($item->total) }}đ</td>
                     <td style="vertical-align: middle;">{{ $item->created_at->format('d/m/Y') }}</td>
                     <td style="vertical-align: middle;">
-                        <span class="badge bg-{{ $item->order_status->color }}">{{ $item->order_status->name }}</span>
+                        <span class="badge" style="background: {{ $item->order_status->color }};">{{ $item->order_status->name }}</span>
                     </td>
                     <td style="vertical-align: middle;">
                         <a href="{{ route('admin.order.detail', $item->id) }}" class="btn btn-sm btn-info shadow">

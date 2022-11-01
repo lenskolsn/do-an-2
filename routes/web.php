@@ -174,6 +174,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('admin.order');
         Route::get('/detail/{id?}', [OrderController::class, 'detail'])->name('admin.order.detail');
+        Route::get('/edit/{id?}', [OrderController::class, 'edit'])->name('admin.order.edit');
         Route::post('/store/{id?}', [OrderController::class, 'store'])->name('admin.order.store');
         Route::get('/delete/{id?}', [OrderController::class, 'delete'])->name('admin.order.delete');
     });

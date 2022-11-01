@@ -54,9 +54,11 @@ class OrderController extends Controller
     function delete($id = null)
     {
         $order_detail = OrderDetail::where('id_order', $id)->get();
+
         foreach ($order_detail as $item) {
             OrderDetail::destroy($item->id);
         }
+
         if (Order::destroy($id)) {
             toast()->success('Xóa đơn hàng thành công!');
             return back();

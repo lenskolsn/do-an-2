@@ -21,6 +21,7 @@ class OrderStatusController extends Controller
     {
         $data = $request->all();
         unset($data['_token']);
+        
         Validator::make(
             $data,
             ['name' => 'required', 'color' => 'required'],
@@ -42,12 +43,13 @@ class OrderStatusController extends Controller
     function delete($id = null)
     {
         $order_status = OrderStatus::find($id);
-        if (empty($order_status->order)) {
-            OrderStatus::destroy($id);
-            toast()->success('Xóa trạng thái thành công!');
+
+        if ($order_status->order) {
+            toast()->error('Xóa trạng thái không thành công!');
             return back();
         } else {
-            toast()->error('Xóa trạng thái không thành công!');
+            OrderStatus::destroy($id);
+            toast()->success('Xóa trạng thái thành công!');
             return back();
         }
     }

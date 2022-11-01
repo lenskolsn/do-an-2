@@ -11,7 +11,7 @@ $colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'
                     label="Tên trạng thái" />
                 <div class="form-group">
                     <label class="form-label">Màu</label>
-                    <select name="color" class="form-select">
+                    {{-- <select name="color" class="form-select">
                         <option value="" selected disabled>Chọn màu</option>
                         @foreach ($colors as $item)
                             @if ($order_status_edit)
@@ -26,7 +26,8 @@ $colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'
                         @error('color')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
-                    </select>
+                    </select> --}}
+                    <input type="color" value="{{ $order_status_edit ? $order_status_edit->color : '' }}" name="color" class="form-control">
                 </div>
                 @if ($order_status_edit)
                     <a href="{{ route('admin.order_status') }}" class="btn btn-sm btn-secondary"><i
@@ -54,7 +55,7 @@ $colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'
                         <span class="badge bg-{{ $item->color }}">{{ $item->name }}</span>
                     </td>
                     <td>
-                        <div class="bg-{{ $item->color }}" style="width: 30px; height: 30px; border-radius: 50%;">
+                        <div style="width: 30px; height: 30px; border-radius: 50%; background: {{ $item->color }};">
                         </div>
                     </td>
                     <td>

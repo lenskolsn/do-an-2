@@ -1,17 +1,14 @@
 <x-only-header title="Thông tin">
-<div class="row">
-    <div class="card text-dark mt-3 col-md-6 mb-3 m-auto">
+    <x-category-info>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-5 mb-3 text-center">
+                <div class="col-md-4 mb-3 text-center">
                     {{-- Avatar --}}
-                    <img id="avatar_khachhang"
-                        src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
+                    <img id="avatar_khachhang" src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}"
                         class="rounded-circle shadow" width="150" height="150" alt="">
                     {{-- Fo1m Lưu avatar --}}
-                    <form
-                        action="{{route('home.customer.changeAvatar')}}"
-                        class="mt-3" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('home.customer.changeAvatar') }}" class="mt-3" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <label for="upload_avatar" class="badge bg-dark fs-5" style="cursor: pointer;"><i
                                 class="fas fa-camera"></i></label>
@@ -21,46 +18,42 @@
                             @enderror
                         </p>
                         <div class="input-group input-group-sm mt-3">
-                            <input id="upload_avatar" type="file" title="Chọn avatar"
-                                class="form-control d-none" name="avatar">
+                            <input id="upload_avatar" type="file" title="Chọn avatar" class="form-control d-none"
+                                name="avatar">
                         </div>
                         <button class="btn-sm btn-dark text-light mt-1">Cập nhật</button>
                     </form>
                 </div>
                 {{-- Thông tin tài khoản --}}
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <div class="card-header text-light" style="background: #4797B1;">THÔNG TIN TÀI KHOẢN</div>
                     <div class="card-body">
                         {{-- Tên --}}
                         <p>
-                            <span><b><i class="fas fa-user"></i></span> </b>
-                            <span>{{ Auth::guard('customer')->user()->fullName }}</span>
+                            <span>Họ tên: {{ Auth::guard('customer')->user()->fullName }}</span>
                         </p>
                         {{-- Email --}}
                         <p>
-                            <span><b><i class="fas fa-envelope"></i> </b>
-                            </span><span>{{ Auth::guard('customer')->user()->email }}</span>
+                            </span><span>Email: {{ Auth::guard('customer')->user()->email }}</span>
                         </p>
                         {{-- Điện thoại --}}
                         <p>
-                            <span><b><i class="fas fa-phone"></i> </b>
-                            </span><span>{{ Auth::guard('customer')->user()->phone }}</span>
+                            <span>Điện thoại: {{ Auth::guard('customer')->user()->phone }}</span>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@section('script')
-    <script>
-        const upload_avatar = document.querySelector('#upload_avatar');
-        let avatar_khachhang = document.querySelector('#avatar_khachhang');
-        upload_avatar.onchange = (e)=>{
-            let file = e.target.files[0];
-            let url = URL.createObjectURL(file);
-            avatar_khachhang.setAttribute('src',url);
-        }
-    </script>
-@endsection
+    </x-category-info>
+    @section('script')
+        <script>
+            const upload_avatar = document.querySelector('#upload_avatar');
+            let avatar_khachhang = document.querySelector('#avatar_khachhang');
+            upload_avatar.onchange = (e) => {
+                let file = e.target.files[0];
+                let url = URL.createObjectURL(file);
+                avatar_khachhang.setAttribute('src', url);
+            }
+        </script>
+    @endsection
 </x-only-header>

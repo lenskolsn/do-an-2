@@ -231,7 +231,7 @@
                         <a href="" class="mt__header-menu-login"><img
                                 style="border-radius: 50%; margin-right: 5px;"
                                 src="/storage/avatar/{{ Auth::guard('customer')->user()->avatar }}" width="30"
-                                height="30" alt=""> {{ Auth::guard('customer')->user()->name }}</a>
+                                height="30" alt=""> {{ Auth::guard('customer')->user()->fullName }}</a>
                         <a href="" class="mt__header-menu-special">/</a>
                         <a href="{{ route('home.logout') }}" class="mt__header-menu-register">Đăng xuất</a>
                     @else
@@ -248,7 +248,7 @@
                         <a href="{{ route('home.about') }}" class="mt__header-menu-link">Giới thiệu</a>
                     </li>
                     <li class="mt__header-menu-item">
-                        <a href="{{ route('home.product') }}" class="mt__header-menu-link">Sản phẩm</a>
+                        <a href="{{ route('home.menu') }}" class="mt__header-menu-link">Sản phẩm</a>
                     </li>
                     <li class="mt__header-menu-item">
                         <a href="{{ route('home.news') }}" class="mt__header-menu-link">Tin tức</a>

@@ -23,7 +23,7 @@ class CartHelper
             'price' => $product->price,
             'categoryId' => $product->categoryId,
             'discountPrice' => $product->discountPrice,
-            'quantity' => $quantity,
+            'quantity' => $quantity ?? 1,
         ];
         if (isset($this->items[$product->id])) {
             $this->items[$product->id]['quantity'] += $quantity;

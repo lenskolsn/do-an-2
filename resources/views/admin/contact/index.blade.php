@@ -11,23 +11,25 @@
         <tbody>
             @foreach ($contact as $item)
                 <tr>
-                    <td>{{$item->id}}</td>
+                    <td>{{ $item->id }}</td>
                     <td class="d-flex align-items-center">
-                        <img src="/storage/avatar/{{$item->customer->avatar}}" class="rounded-circle shadow-sm" width="60" height="60" alt="">
+                        <img src="/storage/avatar/{{ $item->customer->avatar }}" class="rounded-circle shadow-sm"
+                            width="60" height="60" alt="">
                         <div>
-                            <span class="ms-2">{{$item->customer->fullName}}</span> <br>
-                            <span class="ms-2">{{$item->customer->email}}</span>
+                            <span class="ms-2">{{ $item->customer->fullName }}</span> <br>
+                            <span class="ms-2">{{ $item->customer->email }}</span>
                         </div>
                     </td>
                     <td>
-                        <p>{{$item->content}}</p>
+                        <p>{{ $item->content }}</p>
                     </td>
                     <td>
-                        <a href="" class="btn btn-sm shadow btn-warning"><i class="fas fa-edit"></i></a>
-                        <a href="" class="btn btn-sm shadow btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="{{ route('admin.contact.delete', $item->id) }}" class="btn btn-sm shadow btn-danger"><i
+                                class="fas fa-trash"></i></a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
 </x-admin>

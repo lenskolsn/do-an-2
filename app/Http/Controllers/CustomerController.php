@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -193,5 +196,45 @@ class CustomerController extends Controller
         ])->validate();
 
         return $validator;
+    }
+    function storeChangePassword(Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+
+        Validator::make($data, [
+            'old_password' => 'required|min:6',
+            'new_password' => 'required|min:6',
+            'confirm_new_password' => 'required|min:6|same:new_password'
+        ], [], [
+            'old_password' => 'Mật khẩu cũ',
+            'new_password' => 'Mật khẩu mới',
+            'confirm_new_password' => 'Nhập lại mật khẩu mới'
+        ])->validate();
+
+        $id = Auth::guard('customer')->user()->id;
+
+        if (!Hash::check($data['old_password'], Auth::guard('customer')->user()->password)) {
+            toast()->error('Mật khẩu cũ không đúng');
+            return back();
+        } else {
+            unset($data['confirm_new_password']);
+            $new_password = Hash::make($data['new_password']);
+            $customer = Customer::find($id);
+            $customer->update(['password' => $new_password]);
+            toast()->success('Thay đổi mật khẩu thành công!');
+            return back();
+        }
+    }
+    function changePassword()
+    {
+        return view('change_password');
+    }
+    function my_order()
+    {
+        $id_customer = Auth::guard('customer')->user()->id;
+        $order = Order::where('id_customer', $id_customer)->get();
+        $total = Order::where('id_customer', $id_customer)->sum('total');
+        return view('my_order', compact(['order', 'total']));
     }
 }

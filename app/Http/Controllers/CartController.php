@@ -12,13 +12,13 @@ class CartController extends Controller
     {
         return view('cart');
     }
-    function add(CartHelper $cart, $id)
+    function add(CartHelper $cart, $id, Request $request)
     {
         $product = Product::find($id);
         if ($product->discountPrice) {
             $product->price -= ($product->price * $product->discountPrice / 100);
         }
-        $cart->add($product);
+        $cart->add($product, $request->quantity);
         return back();
     }
     function update(CartHelper $cart, Request $request)

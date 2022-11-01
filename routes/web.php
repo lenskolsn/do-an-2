@@ -41,8 +41,14 @@ Route::prefix("/")->group(function () {
     Route::get('/san-pham/{id?}', [HomeController::class, 'product'])->name("home.product");
     // Trang Chi tiết sản phẩm
     Route::get('/chi-tiet/{id?}', [HomeController::class, 'product_detail'])->name("home.product_detail");
-    // Trang thông tin  
-    Route::get('/thong-tin', [CustomerController::class, 'info'])->name("home.info")->middleware('customer');
+    // Thông tin tài khoản
+    Route::prefix('/tai-khoan')->middleware('customer')->group(function () {
+        // Trang thông tin  
+        Route::get('/thong-tin', [CustomerController::class, 'info'])->name("home.info");
+        Route::get('/don-hang', [CustomerController::class, 'my_order'])->name("home.my_order");
+        Route::get('/doi-mat-khau', [CustomerController::class, 'changePassword'])->name("home.changePassword");
+        Route::post('/doi-mat-khau', [CustomerController::class, 'storeChangePassword'])->name("home.storeChangePassword");
+    });
     // Đổi Avatar
     Route::post('/doi-avatar', [HomeController::class, 'changeAvatar'])->name("home.customer.changeAvatar")->middleware('customer');
     // Trang tin tức
@@ -160,7 +166,6 @@ Route::prefix('admin')->group(function () {
     // Liên hệ
     Route::prefix('contacts')->group(function () {
         Route::get('/', [ContactController::class, 'index'])->name('admin.contact');
-        Route::get('/add', [ContactController::class, 'add'])->name('admin.contact.add');
         Route::get('/edit/{id?}', [ContactController::class, 'edit'])->name('admin.contact.edit');
         Route::post('/store/{id?}', [ContactController::class, 'store'])->name('admin.contact.store');
         Route::get('/delete/{id?}', [ContactController::class, 'delete'])->name('admin.contact.delete');
@@ -168,8 +173,7 @@ Route::prefix('admin')->group(function () {
     // Đơn hàng
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('admin.order');
-        Route::get('/add', [OrderController::class, 'add'])->name('admin.order.add');
-        Route::get('/edit/{id?}', [OrderController::class, 'edit'])->name('admin.order.edit');
+        Route::get('/detail/{id?}', [OrderController::class, 'detail'])->name('admin.order.detail');
         Route::post('/store/{id?}', [OrderController::class, 'store'])->name('admin.order.store');
         Route::get('/delete/{id?}', [OrderController::class, 'delete'])->name('admin.order.delete');
     });

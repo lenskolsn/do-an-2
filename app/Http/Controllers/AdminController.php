@@ -92,6 +92,7 @@ class AdminController extends Controller
             ->selectRaw('image,id_product,name,id_order, sum(quantity) as quantity')
             ->groupBy('id_product')
             ->orderBy('quantity', 'desc')
+            ->take(5)
             ->get();
         return view("admin.dashboard", compact(
             [

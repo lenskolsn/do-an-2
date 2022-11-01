@@ -41,8 +41,8 @@
     <div class="row mt-3 py-3 border-top">
         <div class="col-lg-7">
             <h6 class="badge bg-dark">Sản phẩm bán chạy nhất</h6>
-            <table class="table">
-                <thead class="bg-info text-light">
+            <table class="table table-borderless">
+                <thead class="bg-dark text-light">
                     <tr>
                         <th>#</th>
                         <th>Ảnh</th>

@@ -21,6 +21,11 @@ class OrderController extends Controller
         $order_status = OrderStatus::all();
         return view('admin.order.edit', compact(['order', 'order_status']));
     }
+    function detail($id = null)
+    {
+        $order = OrderDetail::where('id_order',$id)->get();
+        return view('admin.order.detail', compact('order'));
+    }
     function store(Request $request, $id = null)
     {
         $data = $request->all();

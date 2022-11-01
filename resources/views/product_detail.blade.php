@@ -9,11 +9,14 @@
             <h2 class="mt-3">Giá: <span class="fw-bold h2" style="color: #4797B1;">{{ number_format($product->price) }}
                     <sup>đ</sup></span></h2>
             <div>
-                <span>Số lượng: </span>
+                <span>Số lượng: {{ $product->inStock }}</span>
             </div>
             {{-- Button Thêm vào giỏ hàng --}}
             <div class="border-bottom py-4">
-                <a href="{{route('home.giohang.add',$product->id)}}" class="btn btn-success fs-4 p-3"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                <form action="{{ route('home.giohang.add', $product->id) }}">
+                    <input type="number" class="form-control fs-4 w-25" min="1" value="1" name="quantity">
+                    <button class="btn btn-success mt-3 fs-4"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+                </form>
             </div>
             <div class="mt-3">
                 <p>Giao hàng miễn phí: Áp dụng đơn hàng > 200.000đ</p>
@@ -24,7 +27,7 @@
     <div class="row py-3">
         <h1 class="text-uppercase">Mô tả sản phẩm</h1>
         <div>
-            {!!$product->description!!}
+            {!! $product->description !!}
         </div>
     </div>
 </x-only-header>

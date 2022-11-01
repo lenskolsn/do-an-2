@@ -30,7 +30,7 @@
                         <span class="badge bg-{{ $item->order_status->color }}">{{ $item->order_status->name }}</span>
                     </td>
                     <td style="vertical-align: middle;">
-                        <a href="" class="btn btn-sm btn-info shadow">
+                        <a href="{{ route('admin.order.detail', $item->id) }}" class="btn btn-sm btn-info shadow">
                             <i class="fas fa-eye"></i>
                         </a>
                         <a href="{{ route('admin.order.edit', $item->id) }}" class="btn btn-sm btn-warning shadow">

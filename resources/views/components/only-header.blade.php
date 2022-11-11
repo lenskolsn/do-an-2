@@ -412,7 +412,7 @@
         </div>
 
         <div class="go-to-head">
-            <a href="#header" title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
+            <a title="Lên đầu trang"><i class="bx bxs-chevron-up-circle"></i></a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -421,6 +421,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/awesome-notifications/index.var.js"></script>
+    <script src="/home/js/home.js"></script>
     @yield('script')
 </body>
 

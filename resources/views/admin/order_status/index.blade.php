@@ -1,6 +1,3 @@
-<?php
-$colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'], ['danger', 'Danger']];
-?>
 <x-admin title="Trạng thái">
     <form action="{{ route('admin.order_status.store', $order_status_edit ? $order_status_edit->id : '') }}"
         method="post">
@@ -11,22 +8,6 @@ $colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'
                     label="Tên trạng thái" />
                 <div class="form-group">
                     <label class="form-label">Màu</label>
-                    {{-- <select name="color" class="form-select">
-                        <option value="" selected disabled>Chọn màu</option>
-                        @foreach ($colors as $item)
-                            @if ($order_status_edit)
-                                <option {{ $item[0] == $order_status_edit->color ? 'selected' : '' }}
-                                    class="bg-{{ $item[0] }}" value="{{ $item[0] }}">{{ $item[1] }}
-                                </option>
-                            @else
-                                <option class="bg-{{ $item[0] }}" value="{{ $item[0] }}">{{ $item[1] }}
-                                </option>
-                            @endif
-                        @endforeach
-                        @error('color')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </select> --}}
                     <input type="color" value="{{ $order_status_edit ? $order_status_edit->color : '' }}" name="color" class="form-control">
                 </div>
                 @if ($order_status_edit)
@@ -52,7 +33,7 @@ $colors = [['primary', 'Primary'], ['success', 'Success'], ['warning', 'Warning'
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>
-                        <span class="badge bg-{{ $item->color }}">{{ $item->name }}</span>
+                        <span class="badge" style="background: {{$item->color}}">{{ $item->name }}</span>
                     </td>
                     <td>
                         <div style="width: 30px; height: 30px; border-radius: 50%; background: {{ $item->color }};">

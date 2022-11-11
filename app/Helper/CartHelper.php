@@ -25,15 +25,15 @@ class CartHelper
             'discountPrice' => $product->discountPrice,
             'quantity' => $quantity ?? 1,
         ];
+        // nếu trong đơn hàng đã có sản phẩm
         if (isset($this->items[$product->id])) {
+            // tăng số lượng
             $this->items[$product->id]['quantity'] += $quantity;
         } else {
             $this->items[$product->id] = $item;
         }
+
         session(['cart' => $this->items]);
-    }
-    public function edit()
-    {
     }
     public function update($id, $quantity)
     {
